@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Waveform } from "@phosphor-icons/react/dist/ssr";
 import { NavDesktop, NavMobile } from "@/components/Nav";
 import ScrollFX from "@/components/ScrollFX";
+import { SITE } from "@/lib/site";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const hanken = Hanken_Grotesk({ subsets: ["latin"], style: ["italic"], weight: ["700", "800"], variable: "--font-hanken", display: "swap" });
@@ -13,9 +14,44 @@ const body = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "India Judicial Pulse — what is happening in the courts",
-  description:
-    "A free, public reading of India's court backlog: how many cases are pending, how fast they clear, and which way it is moving. Taken from NJDG and kept over time.",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: `${SITE.name} — ${SITE.tagline}`,
+    template: `%s — ${SITE.name}`,
+  },
+  description: SITE.description,
+  applicationName: SITE.name,
+  keywords: [
+    "India court backlog",
+    "pending cases India",
+    "NJDG",
+    "eCourts",
+    "judicial data",
+    "case pendency",
+    "clearance rate",
+    "district courts",
+    "High Courts",
+    "Supreme Court of India",
+  ],
+  authors: [{ name: SITE.name }],
+  creator: SITE.name,
+  publisher: SITE.name,
+  alternates: { canonical: "/" },
+  category: "reference",
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    url: SITE.url,
+    locale: SITE.locale,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = { themeColor: "#0b0c10", width: "device-width", initialScale: 1 };

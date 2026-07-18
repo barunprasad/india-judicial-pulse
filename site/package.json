@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync:data": "node scripts/sync-data.mjs",
+    "predev": "node scripts/sync-data.mjs",
     "dev": "next dev -p 4700",
+    "prebuild": "node scripts/sync-data.mjs",
     "build": "next build",
     "start": "next start -p 4700",
     "lint": "eslint"

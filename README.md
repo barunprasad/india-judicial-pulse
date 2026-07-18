@@ -58,6 +58,27 @@ node src/snapshot.mjs      # or: npm run snapshot
 Automated daily by `.github/workflows/snapshot.yml` (GitHub Actions cron), which commits
 each new row. That is the "nothing manual" part — the history accumulates on its own.
 
+## The website (`site/`)
+
+The public site is a static-exported **Next.js** app in `site/` (App Router, TypeScript).
+It reads the committed data at build time, so there's no server and nothing to keep awake.
+
+```bash
+cd site
+npm install
+npm run dev      # local at http://localhost:4700
+npm run build    # static export to site/out/  (deploy this to any CDN / GitHub Pages / Cloudflare Pages)
+```
+
+- **`NEXT_PUBLIC_SITE_URL`** — set this to the deployed origin (e.g. `https://example.org`) so
+  the canonical URL, sitemap, `robots.txt`, and the Open Graph / Twitter share cards resolve to
+  absolute URLs. Unset, it falls back to `http://localhost:4700` (correct for local only).
+- **Data downloads** — `npm run sync:data` (run automatically before `dev`/`build`) copies
+  `data/latest.json` and `data/history/national.jsonl` into `site/public/data/`, so the raw
+  numbers are downloadable straight from the site at `/data` — no GitHub account needed.
+- **Share card & favicon** are generated at build (`opengraph-image`, `icon`) with the latest
+  headline number baked in.
+
 ## Layout
 
 ```
