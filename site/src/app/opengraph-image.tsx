@@ -31,8 +31,21 @@ export default function OpengraphImage() {
           justifyContent: "space-between",
           padding: "72px 80px",
           color: ink,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* soft accent bloom — matches the site's dark-grid sections */}
+        <div
+          style={{
+            position: "absolute",
+            top: -150,
+            right: -90,
+            width: 780,
+            height: 560,
+            background: "radial-gradient(circle at 62% 42%, rgba(32,213,249,0.14), rgba(32,213,249,0) 66%)",
+          }}
+        />
         {/* brand */}
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 30 }}>
@@ -51,7 +64,7 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 150, fontWeight: 800, letterSpacing: -6, lineHeight: 1, marginTop: 14 }}>
             {grp(total)}
           </div>
-          <div style={{ fontSize: 30, color: accent, marginTop: 18 }}>{`that's about ${human(total)} cases`}</div>
+          <div style={{ fontSize: 30, color: accent, marginTop: 18, textShadow: "0 0 34px rgba(32,213,249,0.5)" }}>{`that's about ${human(total)} cases`}</div>
         </div>
 
         {/* footer strip */}

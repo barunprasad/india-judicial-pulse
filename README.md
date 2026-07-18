@@ -1,4 +1,4 @@
-# Judicial Observability — India
+# India Judicial Pulse
 
 A **free, public-service** tool that answers one question about India's courts:
 **what's happening, and is it getting better or worse?**
@@ -8,17 +8,21 @@ shows the country's pendency *right now*, updated daily — but it has no memory
 API. This project's whole job is to **remember the public numbers over time** and make
 the trend legible. Nobody else does this.
 
-> Scope of the data layer today: **national, district-and-subordinate courts** (the level
-> NJDG serves on its homepage). State/district drill-down and High Court / Supreme Court
-> layers are separate, heavier feeds (see *Roadmap*).
+> Scope today: **all three court levels** — district & subordinate courts, the 25 High
+> Courts, and the Supreme Court. The headline national figure is a *derived total*: the
+> sum of NJDG's three official dashboards (NJDG publishes no single all-India number), and
+> the site shows the per-level split so the derivation is transparent. Per-state /
+> per-district drill-down is a separate, heavier feed (see *Roadmap*).
 
 ## What the snapshot pipeline captures
 
-Each run reads the NJDG district homepage and records a single clean row:
+Each run reads all three NJDG dashboards, combines them into a national total, and records
+a single clean row:
 
 | Field | Meaning |
 |---|---|
-| `pending_total` / `_civil` / `_criminal` | Cases pending (the headline) |
+| `pending_total` / `_civil` / `_criminal` | Cases pending, national (the headline) |
+| `district_pending` / `high_court_pending` / `supreme_court_pending` | Per-level split that sums to the headline |
 | `instituted_total` / `disposed_total` | Cases filed vs. decided in the last month |
 | `monthly_clearance_rate_pct` | `disposed ÷ instituted × 100`. Below 100 ⇒ backlog growing |
 | `net_backlog_change` | `instituted − disposed` (positive ⇒ pile grew) |
@@ -27,22 +31,24 @@ Each run reads the NJDG district homepage and records a single clean row:
 | `fetched_at` | The reliable time anchor (UTC) |
 
 ⚠️ `monthly_clearance_rate_pct` is a **single-month** figure and is noisy (≈71% in a
-sample month vs. the official **annual** CCR of ≈91%). Read the *trend* across rows, not
-any one month. `page_updated_label` is NJDG's own footer string and is **not** a reliable
-data date — trust `fetched_at`.
+sample month; measured over a full year the rate is much higher). Read the *trend* across
+rows, not any one month. `page_updated_label` is NJDG's own footer string and is **not** a
+reliable data date — trust `fetched_at`.
 
 ## How it works
 
 ```
-fetch NJDG homepage ─► parse national record ─► VALIDATE (fail loudly)
-      ─► dedupe vs last row ─► append data/history/national.jsonl
-                             └► write immutable data/snapshots/*.json (audit)
+for each dashboard (district, High Court, Supreme Court):
+    fetch homepage ─► parse record ─► VALIDATE (fail loudly)
+combine ─► national total ─► dedupe vs last row ─► append data/history/national.jsonl
+                                                 └► write data/latest.json { meta, national, levels }
+                                                 └► write immutable data/snapshots/*.json (audit)
 ```
 
-- **National data needs no browser.** NJDG server-renders the figures into the homepage
-  as numeric arguments to its own chart functions (`charts(...)`,
-  `pendingAgewiseBarChart(...)`, `fetchStateData(...)`). We parse those — far more stable
-  than scraping table cells. Zero third-party dependencies.
+- **National data needs no browser.** Each NJDG dashboard server-renders its figures as
+  numeric arguments to its own chart functions (`charts(...)`,
+  `pendingAgewiseBarChart(...)`, `fetchStateData(...)`) — the same parser reads all three.
+  Far more stable than scraping table cells. Zero third-party dependencies.
 - **Validation is load-bearing.** A parse that fails sanity bounds or internal
   consistency (civil + criminal = total, age buckets ≈ total) is written to
   `data/rejected/` and the run exits non-zero — it never appends a bad row.
@@ -67,7 +73,7 @@ It reads the committed data at build time, so there's no server and nothing to k
 cd site
 npm install
 npm run dev      # local at http://localhost:4700
-npm run build    # static export to site/out/  (deploy this to any CDN / GitHub Pages / Cloudflare Pages)
+npm run build    # static export to site/out/  (served by Netlify — see Deploy below)
 ```
 
 - **`NEXT_PUBLIC_SITE_URL`** — set this to the deployed origin (e.g. `https://example.org`) so
@@ -79,31 +85,48 @@ npm run build    # static export to site/out/  (deploy this to any CDN / GitHub 
 - **Share card & favicon** are generated at build (`opengraph-image`, `icon`) with the latest
   headline number baked in.
 
+## Deploy (Netlify)
+
+The site is a static export, so hosting is just serving `site/out/`. Config lives in
+`netlify.toml` (base `site`, publish `out`) and `site/public/_headers`.
+
+1. In Netlify: **Add new site → Import from Git**, pick the `india-judicial-pulse` repo.
+   Netlify reads `netlify.toml` — no manual build settings needed.
+2. Name the site **`india-judicial-pulse`** so the URL matches
+   `NEXT_PUBLIC_SITE_URL` in `netlify.toml` (or set that variable to your custom domain).
+3. Deploy. Done.
+
+**It refreshes itself.** Netlify auto-builds on every push to the default branch, and the
+daily snapshot bot (`.github/workflows/snapshot.yml`) commits a new data row and pushes —
+so each day's reading redeploys the site (fresh numbers + a new trend point) with no extra
+workflow. Nothing to keep awake, nothing manual.
+
+> The `_headers` file forces `image/png` on the extensionless `opengraph-image` / `icon`
+> routes so link previews render. Keep it if you move to Cloudflare Pages (also supports
+> `_headers`); on GitHub Pages you'd instead need a `basePath` and can't set headers.
+
 ## Layout
 
 ```
 src/
-  fetchNjdg.mjs      # fetch the public homepage (browser-like UA, low cadence)
-  parseNational.mjs  # pure HTML -> structured record (unit-testable)
-  snapshot.mjs       # fetch -> parse -> validate -> dedupe -> persist
+  fetchNjdg.mjs      # fetch a public dashboard (browser-like UA, low cadence)
+  parseNational.mjs  # pure HTML -> structured record (works for all three levels)
+  snapshot.mjs       # fetch 3 dashboards -> parse -> validate -> combine -> persist
 data/
-  latest.json              # current full record — powers the UI (committed)
-  history/national.jsonl   # the accumulating time series (committed)
+  latest.json              # current record { meta, national, levels } — powers the site (committed)
+  history/national.jsonl   # the accumulating national time series (committed)
   snapshots/               # immutable per-run records (git-ignored, audit)
   rejected/                # failed parses for post-mortem (git-ignored)
-web/
-  index.html               # the "National Pulse" dashboard — self-contained, theme-aware
+site/                # the production website — static-exported Next.js (see "The website")
+web/index.html       # original zero-build prototype dashboard (legacy; site/ supersedes it)
 prototype/           # NJDG fragility probes incl. the state->district drill (Playwright)
 ```
 
-## The Pulse UI
+## Legacy prototype (`web/`)
 
-`web/index.html` is a single self-contained page (no build step, no dependencies) that
-reads `data/latest.json` for the current state and `data/history/national.jsonl` for the
-trend. Open it directly or serve the repo root and browse to `/web/`. It shows total
-pending + civil/criminal split, monthly clearance rate, net flow, the age profile, filings
-by women / senior citizens, and a trend line that fills in as the daily snapshots
-accumulate. Deploy it free on GitHub Pages alongside the committed data.
+`web/index.html` is the original single-file dashboard (no build step, no dependencies)
+that reads `data/latest.json` and `data/history/national.jsonl` directly. The Next.js site
+in `site/` supersedes it; the file is kept as a zero-build reference.
 
 ## Data practices (green line)
 
@@ -113,8 +136,13 @@ Reports **systems** — states, districts, courts — never named individual jud
 
 ## Roadmap
 
-1. **National pulse pipeline** — *done.* Accumulates the daily time series.
-2. **Pulse UI** — *done.* `web/index.html`. Adds the state choropleth once (3) lands.
-3. **State / district drill-down feed** — the heavier Playwright scraper (see `prototype/`).
-4. **Historical depth** — one-time load of the Development Data Lab case-level dataset
+1. **National pulse pipeline** — *done.* All three court levels, combined into a daily
+   national time series.
+2. **Website** — *done.* The Next.js site in `site/` (pulse, about & method, open data,
+   a "why cases stall" explainer, a single-case CNR lookup) + Netlify deploy.
+3. **State / district map** — the "where is it worst" view; needs the heavier Playwright
+   drill-down feed (see `prototype/`).
+4. **Pipeline hardening** — parser fixture tests + tighter sanity gates.
+5. **`/why` live data** — turn NJDG's coded adjournment reasons into a real per-reason tally.
+6. **Historical depth** — one-time load of the Development Data Lab case-level dataset
    (2010–2018) for "why is this place slow" analysis.

@@ -1,0 +1,16 @@
+# Netlify build config for the static Next.js export in site/.
+#
+# Netlify auto-deploys on every push to the production branch — including the daily
+# snapshot bot's data commit — so the site refreshes itself with fresh numbers and a
+# fresh trend point, no extra deploy workflow needed.
+[build]
+  base = "site"              # run install + build from here
+  command = "npm run build"  # prebuild syncs ../data into public/, then next build
+  publish = "out"            # static export output (relative to base)
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Absolute URLs for canonical / Open Graph / sitemap. Change this to your custom
+  # domain if you add one (or override it in Site settings → Environment variables).
+  # For the default URL, name the Netlify site "india-judicial-pulse".
+  NEXT_PUBLIC_SITE_URL = "https://india-judicial-pulse.netlify.app"

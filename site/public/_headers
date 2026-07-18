@@ -1,0 +1,10 @@
+# Next's static export emits the metadata image routes without a file extension,
+# so a CDN would guess the wrong content-type. Force PNG so link previews render.
+/opengraph-image
+  Content-Type: image/png
+/icon
+  Content-Type: image/png
+
+# Raw data is regenerated on every deploy; keep it fresh but briefly cacheable.
+/data/*
+  Cache-Control: public, max-age=300

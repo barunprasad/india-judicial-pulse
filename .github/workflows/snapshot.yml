@@ -40,5 +40,8 @@ jobs:
             echo "No new data — figures unchanged since last run."
           else
             git commit -m "data: NJDG national snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
+            # Push to the branch that triggered the run (the default branch on a schedule);
+            # HEAD:<branch> works even from a detached checkout. This push is what
+            # re-triggers the Netlify build, so the live site refreshes itself.
+            git push origin HEAD:${{ github.ref_name }}
           fi
