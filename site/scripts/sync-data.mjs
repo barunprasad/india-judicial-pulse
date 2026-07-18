@@ -12,9 +12,11 @@ const OUT = join(here, "..", "public", "data");
 const files = [
   ["latest.json", join(DATA, "latest.json")],
   ["history/national.jsonl", join(DATA, "history", "national.jsonl")],
+  ["states/latest.json", join(DATA, "states", "latest.json")],
 ];
 
 mkdirSync(join(OUT, "history"), { recursive: true });
+mkdirSync(join(OUT, "states"), { recursive: true });
 
 let copied = 0;
 for (const [rel, src] of files) {
@@ -35,6 +37,7 @@ writeFileSync(
       files: {
         latest: "/data/latest.json",
         history: "/data/history/national.jsonl",
+        states: "/data/states/latest.json",
       },
       not_legal_evidence: true,
     },

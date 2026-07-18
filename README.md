@@ -66,7 +66,8 @@ combine ─► national total ─► dedupe vs last row ─► append data/histo
 ## Run it
 
 ```bash
-node src/snapshot.mjs      # or: npm run snapshot
+node src/snapshot.mjs      # national (district + High Court + Supreme Court)  · npm run snapshot
+node src/stateSnapshot.mjs # per-state district-court pending (36 states/UTs)   · npm run states
 ```
 
 Automated daily by `.github/workflows/snapshot.yml` (GitHub Actions cron), which commits
@@ -153,9 +154,12 @@ Reports **systems** — states, districts, courts — never named individual jud
    national time series.
 2. **Website** — *done.* The Next.js site in `site/` (pulse, about & method, open data,
    a "why cases stall" explainer, a single-case CNR lookup) + Netlify deploy.
-3. **State / district map** — the "where is it worst" view; needs the heavier Playwright
-   drill-down feed (see `prototype/`).
-4. **Pipeline hardening** — parser fixture tests + tighter sanity gates.
-5. **`/why` live data** — turn NJDG's coded adjournment reasons into a real per-reason tally.
+3. **State ranking (`/map`)** — *done.* All 36 states/UTs ranked by district-court pending
+   and by cases-per-capita (Census 2011). `src/stateSnapshot.mjs` (`npm run states`) fetches
+   each state's page via a two-step CSRF GET — no browser — and the daily cron runs it.
+4. **District drill-down + geographic map** — state → district → court complex; the heavier
+   Playwright feed (see `prototype/`), plus a boundary-correct India map.
+5. **Pipeline hardening** — parser fixture tests + tighter sanity gates.
+6. **`/why` live data** — turn NJDG's coded adjournment reasons into a real per-reason tally.
 6. **Historical depth** — one-time load of the Development Data Lab case-level dataset
    (2010–2018) for "why is this place slow" analysis.

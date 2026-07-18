@@ -56,3 +56,24 @@ export interface HistoryRow {
   pending_total: number;
   [k: string]: unknown;
 }
+
+// Per-state district-court pendency (the /map page).
+export interface StateRow {
+  name: string;
+  code: string;
+  is_ut?: boolean;
+  pending: { total: number; civil: number; criminal: number };
+}
+
+export interface StatesFile {
+  meta: {
+    fetched_at: string;
+    source: string;
+    scope: string;
+    state_sum: number;
+    district_national: number;
+    coverage_pct: number;
+    count: number;
+  };
+  states: StateRow[];
+}

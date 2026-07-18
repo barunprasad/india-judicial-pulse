@@ -5,6 +5,7 @@
   "main": "src/snapshot.mjs",
   "scripts": {
     "snapshot": "node src/snapshot.mjs",
+    "states": "node src/stateSnapshot.mjs",
     "probe": "node prototype/njdg_drill_test.mjs"
   },
   "keywords": ["judiciary", "india", "njdg", "open-data", "civic-tech"],

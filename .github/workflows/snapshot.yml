@@ -31,11 +31,18 @@ jobs:
       - name: Capture NJDG national snapshot
         run: node src/snapshot.mjs
 
+      # Per-state data for /map (36 states, two-step token GETs). Supplementary, not
+      # critical — if NJDG's WAF blocks the runner it keeps the last-good state file and
+      # the national commit still goes through.
+      - name: Capture per-state snapshot
+        continue-on-error: true
+        run: node src/stateSnapshot.mjs
+
       - name: Commit new data (if any)
         run: |
           git config user.name  "njdg-snapshot-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/history/ data/latest.json
+          git add data/history/ data/latest.json data/states/
           if git diff --cached --quiet; then
             echo "No new data — figures unchanged since last run."
           else

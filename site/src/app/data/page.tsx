@@ -51,6 +51,15 @@ export default function DataPage() {
                 </span>
                 <span className="file-fmt mono">JSONL</span>
               </a>
+              <a className="file" href="/data/states/latest.json" download>
+                <span className="file-ic"><FileJsIcon size={20} /></span>
+                <span className="file-main">
+                  <span className="file-name">states/latest.json</span>
+                  <span className="file-desc">District-court pending for all 36 states &amp; union territories
+                    (total, civil, criminal) &mdash; the data behind the Where map.</span>
+                </span>
+                <span className="file-fmt mono">JSON</span>
+              </a>
             </div>
             <p className="figcap">
               Last updated {fmtWhen(meta.fetched_at)}. The files refresh whenever the daily pipeline records a
