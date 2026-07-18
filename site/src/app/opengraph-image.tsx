@@ -13,11 +13,11 @@ export const alt = `${SITE.name} — India's court backlog, kept over time`;
 export default function OpengraphImage() {
   const { national } = getLatest();
   const total = national.pending.total;
-  const bg = "#0b0c10";
-  const ink = "#f6f7fa";
-  const ink2 = "#a4aab7";
-  const ink3 = "#6b7280";
-  const accent = "#c9f24e";
+  const bg = "#08090c";
+  const ink = "#f4f6f8";
+  const ink2 = "#a2a8b4";
+  const ink3 = "#697079";
+  const accent = "#20d5f9";
 
   return new ImageResponse(
     (

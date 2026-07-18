@@ -2,17 +2,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType } from "react";
-import { Pulse, MapTrifold, Hourglass, FileText, Info } from "@phosphor-icons/react/dist/ssr";
+import { PulseIcon, MapTrifoldIcon, HourglassIcon, FileTextIcon, InfoIcon } from "@phosphor-icons/react/dist/ssr";
 
 type IconCmp = ComponentType<{ size?: number; weight?: "thin" | "light" | "regular" | "bold" | "fill" | "duotone" }>;
 type NavLink = { href: string; label: string; Icon: IconCmp };
 
 export const LINKS: NavLink[] = [
-  { href: "/", label: "Pulse", Icon: Pulse },
-  { href: "/map", label: "Where", Icon: MapTrifold },
-  { href: "/why", label: "Why", Icon: Hourglass },
-  { href: "/case", label: "Case", Icon: FileText },
-  { href: "/about", label: "About", Icon: Info },
+  { href: "/", label: "Pulse", Icon: PulseIcon },
+  { href: "/map", label: "Where", Icon: MapTrifoldIcon },
+  { href: "/why", label: "Why", Icon: HourglassIcon },
+  { href: "/case", label: "Case", Icon: FileTextIcon },
+  { href: "/about", label: "About", Icon: InfoIcon },
 ];
 
 const isCurrent = (path: string, href: string) => (href === "/" ? path === "/" : path.startsWith(href));

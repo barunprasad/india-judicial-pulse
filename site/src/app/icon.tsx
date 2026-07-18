@@ -12,7 +12,7 @@ export default function Icon() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#0b0c10",
+          background: "#08090c",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -20,7 +20,7 @@ export default function Icon() {
         }}
       >
         {[9, 17, 12, 20, 11].map((h, i) => (
-          <div key={i} style={{ width: 3, height: h, background: "#c9f24e", borderRadius: 2 }} />
+          <div key={i} style={{ width: 3, height: h, background: "#20d5f9", borderRadius: 2 }} />
         ))}
       </div>
     ),

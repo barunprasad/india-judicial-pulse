@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
-import { getLatest } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Why cases stall",
@@ -9,10 +7,8 @@ export const metadata: Metadata = {
 };
 
 export default function WhyPage() {
-  const { meta } = getLatest();
   return (
-    <>
-      <div className="wrap">
+    <div className="wrap">
         <header className="masthead">
           <p className="eyebrow">Why &middot; the anatomy of a delay</p>
           <h1>Why are cases stuck?</h1>
@@ -110,7 +106,5 @@ export default function WhyPage() {
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
-    </>
   );
 }

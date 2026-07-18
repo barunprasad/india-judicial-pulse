@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowSquareOut, CheckCircle, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
+import { ArrowSquareOutIcon, CheckCircleIcon, MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr";
 
 // A live, one-at-a-time case lookup — exactly as the official portal intends. We never fetch or
 // store anything: we validate the CNR, copy it, and hand you to eCourts where you solve the
@@ -57,8 +57,8 @@ export default function CnrLookup() {
           onKeyDown={(e) => { if (e.key === "Enter") openPortal(); }}
         />
         <button type="button" className="cnr-go" onClick={openPortal} disabled={!valid}>
-          <MagnifyingGlass size={16} weight="bold" /> Look it up
-          <ArrowSquareOut size={14} />
+          <MagnifyingGlassIcon size={16} weight="bold" /> Look it up
+          <ArrowSquareOutIcon size={14} />
         </button>
       </div>
 
@@ -67,7 +67,7 @@ export default function CnrLookup() {
         {showError ? (
           <span id="cnr-help" className="cnr-hint err">A CNR is 16 letters and digits, no spaces or dashes.</span>
         ) : copied ? (
-          <span id="cnr-help" className="cnr-hint ok"><CheckCircle size={14} weight="fill" /> Copied &mdash; paste it into the &ldquo;CNR Number&rdquo; box on eCourts.</span>
+          <span id="cnr-help" className="cnr-hint ok"><CheckCircleIcon size={14} weight="fill" /> Copied &mdash; paste it into the &ldquo;CNR Number&rdquo; box on eCourts.</span>
         ) : (
           <span id="cnr-help" className="cnr-hint">We don&rsquo;t send this anywhere &mdash; it opens the official portal, where you finish the search.</span>
         )}

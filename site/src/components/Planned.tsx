@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import Footer from "@/components/Footer";
-import { getLatest } from "@/lib/data";
 
 // Honest placeholder for planned routes — real content + a status rail so the page reads
 // like a considered document, not a dead end with empty space.
@@ -17,10 +15,8 @@ export default function Planned({
   children: ReactNode;
   rail?: ReactNode;
 }) {
-  const { meta } = getLatest();
   return (
-    <>
-      <div className="wrap">
+    <div className="wrap">
         <header className="masthead">
           <p className="eyebrow">{eyebrow}</p>
           <h1>{title}</h1>
@@ -42,7 +38,5 @@ export default function Planned({
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
-    </>
   );
 }

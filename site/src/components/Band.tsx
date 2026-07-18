@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
-// A full-bleed section band. `light` flips it to a light ground; `bg` sets a subtle,
-// treated (dim, desaturated, masked) backdrop image behind the content.
+// A full-bleed section band. `grid` lays a faint technical grid behind the content
+// (the dark showcase treatment); `bg` sets a subtle, treated backdrop image instead.
 export default function Band({
-  light,
+  grid,
   cover,
   id,
   label,
@@ -11,7 +11,7 @@ export default function Band({
   className = "",
   children,
 }: {
-  light?: boolean;
+  grid?: boolean;
   cover?: boolean;
   id?: string;
   label?: string;
@@ -19,9 +19,10 @@ export default function Band({
   className?: string;
   children: ReactNode;
 }) {
-  const cls = ["band", light ? "band-light" : "", cover ? "cover" : "", className].filter(Boolean).join(" ");
+  const cls = ["band", cover ? "cover" : "", className].filter(Boolean).join(" ");
   return (
     <section id={id} className={cls} aria-label={label}>
+      {grid ? <div className="band-grid-layer" aria-hidden="true" /> : null}
       {bg ? <div className="band-bg" style={{ backgroundImage: `url("${bg}")` }} aria-hidden="true" /> : null}
       <div className="wrap">{children}</div>
     </section>

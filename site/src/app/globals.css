@@ -8,17 +8,22 @@
 
 :root {
   color-scheme: dark;
-  /* one confident near-black ground + a single electric accent (bold modern product) */
-  --bg:#0b0c10; --panel:#14161d; --panel-2:#1b1e26; --line:#242832; --line-2:#343a46;
-  --ink:#f6f7fa; --ink-2:#a4aab7; --ink-3:#6b7280;
-  --civil:#5aa2f5; --criminal:#c341f5; --grow:#ff5b6b; --shrink:#25d6a4;
-  --accent:#c9f24e; --accent-2:#a9d838; --focus:#c9f24e;
+  /* one confident near-black ground + a single electric-blue accent (bold modern product) */
+  --bg:#08090c; --panel:#121419; --panel-2:#181b21; --line:#22252d; --line-2:#31353f;
+  --ink:#f4f6f8; --ink-2:#a2a8b4; --ink-3:#697079;
+  /* data hues: amber civil / magenta criminal — kept clear of the cool blue accent.
+     civil↔criminal CVD ΔE 37, civil↔grow(coral) ΔE 11 (both > floor). Amber runs a touch
+     bright for the strict luminance band, but every civil/criminal mark is directly labelled,
+     so brightness never carries magnitude alone. */
+  --civil:#eaa81e; --criminal:#c341f5; --grow:#ff5b6b; --shrink:#25d6a4;
+  --accent:#20d5f9; --accent-2:#14b6d8; --focus:#20d5f9;
+  --glow: color-mix(in srgb, var(--accent) 55%, transparent);
   --shadow-2: 0 1px 0 rgba(255,255,255,.05) inset, 0 28px 64px -34px rgba(0,0,0,.9);
   --maxw: 1180px;
   --font-display: var(--font-geist);
 }
 /* footer sits on a slightly deeper shade of the same ground */
-.band-ink { --bg:#08090c; background: var(--bg); }
+.band-ink { --bg:#050609; background: var(--bg); }
 
 * , *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
@@ -29,7 +34,7 @@ body {
 }
 a { color: inherit; }
 h1, h2, h3 { margin: 0; font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; letter-spacing: -.035em; line-height: 1.0; }
-.serif { font-family: var(--font-hanken), system-ui, sans-serif; font-style: italic; font-weight: 800; letter-spacing: -.02em; color: var(--accent); }
+.serif { font-family: var(--font-hanken), system-ui, sans-serif; font-style: italic; font-weight: 800; letter-spacing: -.02em; color: var(--accent); text-shadow: 0 0 28px var(--glow); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; } }
 
@@ -215,7 +220,7 @@ table.data thead th { font-family: var(--font-mono); font-size: 10px; letter-spa
 .cnr-input::placeholder { color: var(--ink-3); letter-spacing: .04em; text-transform: none; }
 .cnr-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
 .cnr-input[aria-invalid="true"] { border-color: color-mix(in srgb, var(--grow) 70%, var(--line-2)); }
-.cnr-go { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #0b0c10; border: 0; border-radius: 10px; padding: 0 18px; min-height: 48px; font-family: var(--font-body); font-weight: 700; font-size: 14px; cursor: pointer; transition: filter .18s, opacity .18s; }
+.cnr-go { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--bg); border: 0; border-radius: 10px; padding: 0 18px; min-height: 48px; font-family: var(--font-body); font-weight: 700; font-size: 14px; cursor: pointer; transition: filter .18s, opacity .18s; }
 .cnr-go:hover:not(:disabled) { filter: brightness(1.06); }
 .cnr-go:disabled { opacity: .38; cursor: not-allowed; }
 .cnr-meta { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
@@ -308,7 +313,7 @@ table.data thead th { font-family: var(--font-mono); font-size: 10px; letter-spa
 .splitwrap.centered .split-legend { justify-content: center; }
 
 /* header: lime pill active, dark text (punchy) */
-.nav-desk a[aria-current="page"] { color: #0b0c10; background: var(--accent); font-weight: 600; }
+.nav-desk a[aria-current="page"] { color: var(--bg); background: var(--accent); font-weight: 600; }
 
 /* scroll reveals (GSAP) + smooth scroll (Lenis) */
 [data-animate] { will-change: opacity, transform; }
@@ -324,7 +329,7 @@ html.lenis, html.lenis body { height: auto; }
 
 /* slim right-aligned header (always-dark translucent bar so it reads over any band) */
 .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 60;
-  background: color-mix(in srgb, #0b0c10 56%, transparent); backdrop-filter: blur(14px) saturate(1.2);
+  background: color-mix(in srgb, var(--bg) 56%, transparent); backdrop-filter: blur(14px) saturate(1.2);
   border-bottom: 1px solid rgba(255,255,255,.06); }
 .topbar-row { display: flex; align-items: center; justify-content: space-between; height: 58px; }
 .brand { color: #f6f7fa; font-size: 15px; }
@@ -332,7 +337,7 @@ html.lenis, html.lenis body { height: auto; }
 .nav-desk { display: none; gap: 2px; padding: 0; border: 0; background: none; }
 .nav-desk a { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: rgba(246,247,250,.6); padding: 7px 11px; border-radius: 999px; transition: color .2s, background .2s; }
 .nav-desk a:hover { color: #fff; background: rgba(255,255,255,.06); }
-.nav-desk a[aria-current="page"] { color: #0b0c10; background: var(--accent); font-weight: 600; }
+.nav-desk a[aria-current="page"] { color: var(--bg); background: var(--accent); font-weight: 600; }
 @media (min-width: 760px) { .nav-desk { display: inline-flex; } }
 
 /* section kicker as an accent-outline pill */
@@ -363,11 +368,23 @@ html.lenis, html.lenis body { height: auto; }
 .cover .band-bg { filter: grayscale(1) contrast(1.05) brightness(.8); opacity: .1; }
 .cover .band-bg::after { background: radial-gradient(150% 120% at 50% 30%, transparent 0%, color-mix(in srgb, var(--bg) 78%, transparent) 52%, var(--bg) 84%); }
 
+/* faint technical grid — the dark section's contrast comes from this, not a light flip */
+.band-grid-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px);
+  background-size: 54px 54px; background-position: center;
+  -webkit-mask-image: radial-gradient(ellipse 78% 74% at 50% 42%, #000 38%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 74% at 50% 42%, #000 38%, transparent 100%); }
+/* a soft accent bloom drifting under the grid, so the section reads "live" */
+.band-grid-layer::after { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(46% 42% at 74% 30%, color-mix(in srgb, var(--accent) 9%, transparent) 0%, transparent 70%); }
+
 /* footer backdrop (the "Listen." wall) */
 .foot { position: relative; overflow: hidden; }
 .foot > .wrap { position: relative; z-index: 1; }
-.foot .band-bg { filter: grayscale(1) contrast(1.1) brightness(.92); opacity: .16; }
-.foot .band-bg::after { background: radial-gradient(140% 120% at 50% 40%, transparent 0%, var(--bg) 72%); }
+.foot .band-bg { filter: grayscale(1) contrast(1.05) brightness(.72); opacity: .12; }
+.foot .band-bg::after { background: radial-gradient(140% 125% at 50% 42%, transparent 0%, var(--bg) 82%); }
 
 /* court-levels feature section — machine-style joined cards */
 .levels { display: grid; grid-template-columns: 1fr; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: color-mix(in srgb, var(--panel) 52%, transparent); }
@@ -395,4 +412,4 @@ html.lenis, html.lenis body { height: auto; }
 @media (min-width: 760px) { .fontctl { bottom: 20px; } }
 .fontctl-lab { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: rgba(246,247,250,.5); }
 .fontctl-b { font-family: var(--font-mono); font-size: 11px; color: rgba(246,247,250,.7); background: none; border: 0; border-radius: 999px; padding: 4px 10px; cursor: pointer; }
-.fontctl-b.on { color: #0b0c10; background: var(--accent); }
+.fontctl-b.on { color: var(--bg); background: var(--accent); }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/ssr";
 
 // A numbered index row (Wibify-style): number · name + description · meta · arrow.
 export default function IndexRow({
@@ -23,7 +23,7 @@ export default function IndexRow({
         <span className="ix-desc">{desc}</span>
       </div>
       <span className="ix-meta">{meta}</span>
-      <ArrowUpRight size={18} className="ix-arrow" />
+      <ArrowUpRightIcon size={18} className="ix-arrow" />
     </Link>
   );
 }

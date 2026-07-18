@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowSquareOut, FileJs, Table } from "@phosphor-icons/react/dist/ssr";
-import Footer from "@/components/Footer";
+import { ArrowSquareOutIcon, FileJsIcon, TableIcon } from "@phosphor-icons/react/dist/ssr";
 import { getLatest, getHistory } from "@/lib/data";
 import { fmtWhen, grp } from "@/lib/format";
 import { SITE } from "@/lib/site";
@@ -16,8 +15,7 @@ export default function DataPage() {
   const history = getHistory();
 
   return (
-    <>
-      <div className="wrap">
+    <div className="wrap">
         <header className="masthead">
           <p className="eyebrow">Data &middot; open for anyone</p>
           <h1>Get the raw data.</h1>
@@ -36,7 +34,7 @@ export default function DataPage() {
             <h2 id="files">The files</h2>
             <div className="files">
               <a className="file" href="/data/latest.json" download>
-                <span className="file-ic"><FileJs size={20} /></span>
+                <span className="file-ic"><FileJsIcon size={20} /></span>
                 <span className="file-main">
                   <span className="file-name">latest.json</span>
                   <span className="file-desc">The most recent reading &mdash; national totals plus the split
@@ -45,7 +43,7 @@ export default function DataPage() {
                 <span className="file-fmt mono">JSON</span>
               </a>
               <a className="file" href="/data/history/national.jsonl" download>
-                <span className="file-ic"><Table size={20} /></span>
+                <span className="file-ic"><TableIcon size={20} /></span>
                 <span className="file-main">
                   <span className="file-name">national.jsonl</span>
                   <span className="file-desc">The full time-series &mdash; one flat row per daily reading, ready
@@ -97,15 +95,13 @@ curl -s ${SITE.url}/data/history/national.jsonl`}</code></pre>
             <div className="rail">
               <p className="rail-h">Straight to source</p>
               <nav className="rail-toc">
-                <a href="https://njdg.ecourts.gov.in/njdg_v3/" target="_blank" rel="noopener">District dashboard <ArrowSquareOut size={12} /></a>
-                <a href="https://njdg.ecourts.gov.in/hcnjdg_v2/" target="_blank" rel="noopener">High Court dashboard <ArrowSquareOut size={12} /></a>
-                <a href="https://scdg.sci.gov.in/scnjdg/" target="_blank" rel="noopener">Supreme Court dashboard <ArrowSquareOut size={12} /></a>
+                <a href="https://njdg.ecourts.gov.in/njdg_v3/" target="_blank" rel="noopener">District dashboard <ArrowSquareOutIcon size={12} /></a>
+                <a href="https://njdg.ecourts.gov.in/hcnjdg_v2/" target="_blank" rel="noopener">High Court dashboard <ArrowSquareOutIcon size={12} /></a>
+                <a href="https://scdg.sci.gov.in/scnjdg/" target="_blank" rel="noopener">Supreme Court dashboard <ArrowSquareOutIcon size={12} /></a>
               </nav>
             </div>
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
-    </>
   );
 }

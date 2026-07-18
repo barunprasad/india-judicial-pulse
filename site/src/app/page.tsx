@@ -8,12 +8,10 @@ import AgeChart from "@/components/AgeChart";
 import Trend from "@/components/Trend";
 import IndexRow from "@/components/IndexRow";
 import CountUp from "@/components/CountUp";
-import Footer from "@/components/Footer";
 import Levels from "@/components/Levels";
 
-// Subtle, treated backdrops, placed where they mean something:
-// a moody "Listen." wall behind the hero; a law-archive of books behind "the people".
-const IMG_LISTEN = "https://images.unsplash.com/photo-1693665509772-131d6ff3051c?w=1600&q=60&auto=format&fit=crop";
+// A subtle, treated backdrop for the cover — a law-archive of books, heavily dimmed.
+// (The footer's "Listen." wall lives in the root layout, shared across all pages.)
 const IMG_ARCHIVE = "https://images.unsplash.com/photo-1632684140995-27b3244734af?w=1600&q=60&auto=format&fit=crop";
 
 export default function Pulse() {
@@ -62,8 +60,8 @@ export default function Pulse() {
         <StatStrip record={r} />
       </Band>
 
-      {/* THE DEPTH — LIGHT band (a bright showcase between the dark) */}
-      <Band light label="The shape of the backlog">
+      {/* THE DEPTH — dark showcase, contrast from a faint technical grid */}
+      <Band grid label="The shape of the backlog">
         <SectionHead
           index="03"
           kicker="The depth"
@@ -116,8 +114,6 @@ export default function Pulse() {
           </div>
         </div>
       </Band>
-
-      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} bg={IMG_LISTEN} />
     </>
   );
 }

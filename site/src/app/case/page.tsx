@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
 import CnrLookup from "@/components/CnrLookup";
-import { getLatest } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Look up your case",
@@ -10,10 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default function CasePage() {
-  const { meta } = getLatest();
   return (
-    <>
-      <div className="wrap">
+    <div className="wrap">
         <header className="masthead">
           <p className="eyebrow">Your case &middot; one record at a time</p>
           <h1>Look up a single case.</h1>
@@ -88,7 +84,5 @@ export default function CasePage() {
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
-    </>
   );
 }

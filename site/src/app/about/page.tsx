@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
-import { getLatest } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About & method — India Judicial Pulse",
@@ -8,10 +6,8 @@ export const metadata: Metadata = {
 };
 
 export default function About() {
-  const { meta } = getLatest();
   return (
-    <>
-      <div className="wrap">
+    <div className="wrap">
         <header className="masthead">
           <p className="eyebrow">About &amp; method</p>
           <h1>How this works, in plain terms.</h1>
@@ -135,7 +131,5 @@ export default function About() {
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
-    </>
   );
 }
