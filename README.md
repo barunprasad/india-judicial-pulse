@@ -109,6 +109,11 @@ daily snapshot bot (`.github/workflows/snapshot.yml`) commits a new data row and
 so each day's reading redeploys the site (fresh numbers + a new trend point) with no extra
 workflow. Nothing to keep awake, nothing manual.
 
+> `netlify.toml` sets `ignore = "false"` (always build). Without it, Netlify's base-directory
+> optimisation would **skip** the snapshot commits — they touch `data/` at the repo root,
+> outside the `site/` base — and the live site would never refresh even though the build
+> bakes that data in via `../data`.
+
 > The `_headers` file forces `image/png` on the extensionless `opengraph-image` / `icon`
 > routes so link previews render. Keep it if you move to Cloudflare Pages (also supports
 > `_headers`); on GitHub Pages you'd instead need a `basePath` and can't set headers.

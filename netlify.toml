@@ -7,6 +7,12 @@
   base = "site"              # run install + build from here
   command = "npm run build"  # prebuild syncs ../data into public/, then next build
   publish = "out"            # static export output (relative to base)
+  # ALWAYS build. With a base directory set, Netlify's default skips a build when nothing
+  # inside base/ (site/) changed — but the daily snapshot commits only touch data/ (repo
+  # root, outside site/), which the build bakes in via ../data. Without this override those
+  # data pushes silently cancel the deploy, so the live site never refreshes. Exit 1 =
+  # build; `false` always exits 1. A static build is cheap — fine to run on every push.
+  ignore = "false"
 
 [build.environment]
   NODE_VERSION = "22"
