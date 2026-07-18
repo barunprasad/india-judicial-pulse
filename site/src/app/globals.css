@@ -11,7 +11,7 @@
   /* one confident near-black ground + a single electric accent (bold modern product) */
   --bg:#0b0c10; --panel:#14161d; --panel-2:#1b1e26; --line:#242832; --line-2:#343a46;
   --ink:#f6f7fa; --ink-2:#a4aab7; --ink-3:#6b7280;
-  --civil:#9d86f9; --criminal:#f5a623; --grow:#ff5b6b; --shrink:#25d6a4;
+  --civil:#5aa2f5; --criminal:#c341f5; --grow:#ff5b6b; --shrink:#25d6a4;
   --accent:#c9f24e; --accent-2:#a9d838; --focus:#c9f24e;
   --shadow-2: 0 1px 0 rgba(255,255,255,.05) inset, 0 28px 64px -34px rgba(0,0,0,.9);
   --maxw: 1180px;
@@ -250,7 +250,7 @@ table.data thead th { font-family: var(--font-mono); font-size: 10px; letter-spa
   color-scheme: light;
   --bg:#f4f4f1; --panel:#ffffff; --panel-2:#eaeae4; --line:#d6d5cd; --line-2:#bfbeb3;
   --ink:#0c0d11; --ink-2:#2c2e35; --ink-3:#5a5d65;
-  --civil:#6a45d1; --criminal:#a5620a; --grow:#c62d48; --shrink:#12854b;
+  --civil:#2f66cf; --criminal:#9c1fce; --grow:#c62d48; --shrink:#12854b;
   --accent:#3f6212; --accent-2:#365314; --focus:#3f6212;
   background: var(--bg); color: var(--ink);
 }
@@ -303,7 +303,10 @@ html.lenis, html.lenis body { height: auto; }
 
 /* reduced display sizes */
 .masthead h1 { font-size: clamp(38px, 7.4vw, 74px); }
-.hero-num { font-size: clamp(54px, 13vw, 122px); letter-spacing: -.05em; }
+/* tight line-height overshoots the box top/bottom — add clearance so the
+   "CASES PENDING RIGHT NOW" label and the "~crore" line don't collide */
+.hero-num { font-size: clamp(54px, 13vw, 122px); letter-spacing: -.05em; margin: 20px 0 0; padding: 4px 0; }
+.hero-approx { margin-top: 16px; }
 .h2 { font-size: clamp(26px, 4.4vw, 40px); }
 .stat-val { font-size: clamp(34px, 5vw, 44px); }
 .demo .d-val { font-size: clamp(30px, 5vw, 42px); }
@@ -328,6 +331,26 @@ html.lenis, html.lenis body { height: auto; }
 .foot > .wrap { position: relative; z-index: 1; }
 .foot .band-bg { filter: grayscale(1) contrast(1.1) brightness(.92); opacity: .16; }
 .foot .band-bg::after { background: radial-gradient(140% 120% at 50% 40%, transparent 0%, var(--bg) 72%); }
+
+/* court-levels feature section — machine-style joined cards */
+.levels { display: grid; grid-template-columns: 1fr; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: color-mix(in srgb, var(--panel) 52%, transparent); }
+@media (min-width: 760px) { .levels { grid-template-columns: repeat(3, 1fr); } }
+.level { display: flex; flex-direction: column; padding: 28px 26px 30px; border-top: 1px solid var(--line); transition: background .25s; }
+.level:first-child { border-top: 0; }
+@media (min-width: 760px) {
+  .level { border-top: 0; border-left: 1px solid var(--line); padding: 34px 30px 34px; }
+  .level:first-child { border-left: 0; }
+}
+.level:hover { background: color-mix(in srgb, var(--panel) 78%, transparent); }
+/* top row: index + proportional share meter (the honest "graphic") */
+.level-top { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.level-n { font-size: 12px; letter-spacing: .1em; color: var(--accent); flex: none; }
+.level-share { position: relative; flex: 1; height: 6px; border-radius: 4px; background: var(--panel-2); overflow: hidden; }
+.level-share i { position: absolute; left: 0; top: 0; bottom: 0; min-width: 5px; border-radius: 4px; background: var(--accent); }
+.level-h { font-family: var(--font-display); font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -.02em; line-height: 1.12; }
+.level-num { font-family: var(--font-display); font-size: clamp(30px, 4.2vw, 42px); font-weight: 800; letter-spacing: -.035em; font-variant-numeric: tabular-nums; margin: 14px 0 0; line-height: 1; }
+.level-meta { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); margin-top: 12px; }
+.level-desc { color: var(--ink-2); font-size: 13.5px; line-height: 1.6; margin: 18px 0 0; }
 
 /* font-toggle control */
 .fontctl { position: fixed; z-index: 70; right: 16px; bottom: 84px; display: flex; align-items: center; gap: 6px;

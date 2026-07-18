@@ -1,94 +1,319 @@
 {
   "meta": {
-    "url": "https://njdg.ecourts.gov.in/njdg_v3/",
-    "html_bytes": 160984,
-    "html_sha256": "12a6eb8e239af03100cdbe30813bf12538526c9b2df9c902cbfd1653b4e3b6a6",
-    "fetched_at": "2026-07-18T08:30:24.804Z"
+    "fetched_at": "2026-07-18T15:49:20.915Z",
+    "sources": [
+      {
+        "level": "district",
+        "url": "https://njdg.ecourts.gov.in/njdg_v3/"
+      },
+      {
+        "level": "high_court",
+        "url": "https://njdg.ecourts.gov.in/hcnjdg_v2/"
+      },
+      {
+        "level": "supreme_court",
+        "url": "https://scdg.sci.gov.in/scnjdg/"
+      }
+    ]
   },
-  "record": {
-    "parser_version": "1.0.0",
-    "court_level": "district_subordinate",
+  "national": {
     "scope": "national",
-    "page_updated_label": "11-08-2025",
+    "court_levels": 3,
     "pending": {
-      "total": 49867072,
-      "civil": 11337624,
-      "criminal": 38529448
+      "total": 56423082,
+      "civil": 15911809,
+      "criminal": 40511273
     },
     "last_month": {
       "instituted": {
-        "total": 1801610,
-        "civil": 271193,
-        "criminal": 1530417
+        "total": 1805760,
+        "civil": 273974,
+        "criminal": 1531954
       },
       "disposed": {
-        "total": 1279998,
-        "civil": 214703,
-        "criminal": 1065295
+        "total": 1281525,
+        "civil": 215758,
+        "criminal": 1065905
       },
-      "monthly_clearance_rate_pct": 71.05,
-      "net_backlog_change": 521612
+      "monthly_clearance_rate_pct": 70.97,
+      "net_backlog_change": 524235
     },
     "age_profile": {
       "under_1yr": {
-        "civil": 4154314,
-        "criminal": 13039309,
-        "total": 17193623,
+        "civil": 5290766,
+        "criminal": 13587063,
+        "total": 18877829,
         "pct_of_pending": 34
       },
       "y1_to_3": {
-        "civil": 2989912,
-        "criminal": 9115731,
-        "total": 12105643,
+        "civil": 3842539,
+        "criminal": 9478247,
+        "total": 13320786,
         "pct_of_pending": 24
       },
       "y3_to_5": {
-        "civil": 1624368,
-        "criminal": 5431710,
-        "total": 7056078,
+        "civil": 2154305,
+        "criminal": 5619066,
+        "total": 7773371,
         "pct_of_pending": 14
       },
       "y5_to_10": {
-        "civil": 1708676,
-        "criminal": 6939167,
-        "total": 8647843,
-        "pct_of_pending": 17
+        "civil": 2680296,
+        "criminal": 7303160,
+        "total": 9983456,
+        "pct_of_pending": 18
       },
       "above_10yr": {
-        "civil": 860354,
-        "criminal": 4003531,
-        "total": 4863885,
-        "pct_of_pending": 10
+        "civil": 1869844,
+        "criminal": 4500964,
+        "total": 6370808,
+        "pct_of_pending": 11
       }
     },
     "derived": {
-      "pct_pending_over_3yr": 41,
-      "pct_pending_over_5yr": 27
+      "pct_pending_over_3yr": 43,
+      "pct_pending_over_5yr": 29
     },
     "litigants": {
       "senior_citizen_filed": 3317513,
       "women_filed": 3963801
+    }
+  },
+  "levels": {
+    "district": {
+      "label": "District & subordinate courts",
+      "url": "https://njdg.ecourts.gov.in/njdg_v3/",
+      "parser_version": "1.0.0",
+      "court_level": "district_subordinate",
+      "scope": "national",
+      "page_updated_label": "11-08-2025",
+      "pending": {
+        "total": 49867072,
+        "civil": 11337624,
+        "criminal": 38529448
+      },
+      "last_month": {
+        "instituted": {
+          "total": 1801610,
+          "civil": 271193,
+          "criminal": 1530417
+        },
+        "disposed": {
+          "total": 1279998,
+          "civil": 214703,
+          "criminal": 1065295
+        },
+        "monthly_clearance_rate_pct": 71.05,
+        "net_backlog_change": 521612
+      },
+      "age_profile": {
+        "under_1yr": {
+          "civil": 4154314,
+          "criminal": 13039309,
+          "total": 17193623,
+          "pct_of_pending": 34
+        },
+        "y1_to_3": {
+          "civil": 2989912,
+          "criminal": 9115731,
+          "total": 12105643,
+          "pct_of_pending": 24
+        },
+        "y3_to_5": {
+          "civil": 1624368,
+          "criminal": 5431710,
+          "total": 7056078,
+          "pct_of_pending": 14
+        },
+        "y5_to_10": {
+          "civil": 1708676,
+          "criminal": 6939167,
+          "total": 8647843,
+          "pct_of_pending": 17
+        },
+        "above_10yr": {
+          "civil": 860354,
+          "criminal": 4003531,
+          "total": 4863885,
+          "pct_of_pending": 10
+        }
+      },
+      "derived": {
+        "pct_pending_over_3yr": 41,
+        "pct_pending_over_5yr": 27
+      },
+      "litigants": {
+        "senior_citizen_filed": 3317513,
+        "women_filed": 3963801
+      },
+      "_raw": {
+        "charts_args": [
+          "7183310",
+          "25490139",
+          "32673449",
+          "11337624",
+          "38529448",
+          "49867072",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''"
+        ]
+      },
+      "_errors": []
     },
-    "_raw": {
-      "charts_args": [
-        "7183310",
-        "25490139",
-        "32673449",
-        "11337624",
-        "38529448",
-        "49867072",
-        "''",
-        "''",
-        "''",
-        "''",
-        "''",
-        "''",
-        "''",
-        "''",
-        "''",
-        "''"
+    "high_court": {
+      "label": "High Courts",
+      "url": "https://njdg.ecourts.gov.in/hcnjdg_v2/",
+      "parser_version": "1.0.0",
+      "court_level": "district_subordinate",
+      "scope": "national",
+      "page_updated_label": null,
+      "pending": {
+        "total": 6460317,
+        "civil": 4500126,
+        "criminal": 1960191
+      },
+      "last_month": {
+        "instituted": {
+          "total": 1,
+          "civil": 99,
+          "criminal": 70
+        },
+        "disposed": {
+          "total": 1,
+          "civil": 89,
+          "criminal": 50
+        },
+        "monthly_clearance_rate_pct": 100,
+        "net_backlog_change": 0
+      },
+      "age_profile": {
+        "under_1yr": {
+          "civil": 1136452,
+          "criminal": 547754,
+          "total": 1684206,
+          "pct_of_pending": 26
+        },
+        "y1_to_3": {
+          "civil": 852627,
+          "criminal": 362516,
+          "total": 1215143,
+          "pct_of_pending": 19
+        },
+        "y3_to_5": {
+          "civil": 529937,
+          "criminal": 187356,
+          "total": 717293,
+          "pct_of_pending": 11
+        },
+        "y5_to_10": {
+          "civil": 971620,
+          "criminal": 363993,
+          "total": 1335613,
+          "pct_of_pending": 21
+        },
+        "above_10yr": {
+          "civil": 1009490,
+          "criminal": 497433,
+          "total": 1506923,
+          "pct_of_pending": 23
+        }
+      },
+      "derived": {
+        "pct_pending_over_3yr": 55,
+        "pct_pending_over_5yr": 44
+      },
+      "litigants": {
+        "senior_citizen_filed": null,
+        "women_filed": null
+      },
+      "_raw": {
+        "charts_args": [
+          "3363674",
+          "1411298",
+          "4774972",
+          "4500126",
+          "1960191",
+          "6460317",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''"
+        ]
+      },
+      "_errors": []
+    },
+    "supreme_court": {
+      "label": "Supreme Court",
+      "url": "https://scdg.sci.gov.in/scnjdg/",
+      "parser_version": "1.0.0",
+      "court_level": "district_subordinate",
+      "scope": "national",
+      "page_updated_label": "28-04-2026",
+      "pending": {
+        "total": 95693,
+        "civil": 74059,
+        "criminal": 21634
+      },
+      "last_month": {
+        "instituted": {
+          "total": 4149,
+          "civil": 2682,
+          "criminal": 1467
+        },
+        "disposed": {
+          "total": 1526,
+          "civil": 966,
+          "criminal": 560
+        },
+        "monthly_clearance_rate_pct": 36.78,
+        "net_backlog_change": 2623
+      },
+      "age_profile": {},
+      "derived": {
+        "pct_pending_over_3yr": null,
+        "pct_pending_over_5yr": null
+      },
+      "litigants": {
+        "senior_citizen_filed": null,
+        "women_filed": null
+      },
+      "_raw": {
+        "charts_args": [
+          "27113",
+          "10307",
+          "37420",
+          "74059",
+          "21634",
+          "95693",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''",
+          "''"
+        ]
+      },
+      "_errors": [
+        "pendingAgewiseBarChart() call not found"
       ]
-    },
-    "_errors": []
+    }
   }
 }

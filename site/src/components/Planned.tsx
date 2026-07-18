@@ -42,7 +42,7 @@ export default function Planned({
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} url={meta.url} />
+      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
     </>
   );
 }

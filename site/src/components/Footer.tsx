@@ -4,20 +4,22 @@ import { fmtWhen } from "@/lib/format";
 // Honesty lives in the footer of every page — it's part of the product, not fine print.
 export default function Footer({
   fetchedAt,
-  url = "https://njdg.ecourts.gov.in/njdg_v3/",
+  sources,
   bg,
 }: {
   fetchedAt?: string;
-  url?: string;
+  sources?: { level: string; url: string }[];
   bg?: string;
 }) {
+  const primary = sources?.[0]?.url ?? "https://njdg.ecourts.gov.in/njdg_v3/";
   return (
     <footer className="foot band-ink">
       {bg ? <div className="band-bg" style={{ backgroundImage: `url("${bg}")` }} aria-hidden="true" /> : null}
       <div className="wrap">
         <p className="src">
-          Source: <a href={url} target="_blank" rel="noopener">NJDG &mdash; National Judicial Data Grid</a>,
-          the eCourts project&rsquo;s official public dashboard. Read {fetchedAt ? fmtWhen(fetchedAt) : ""}.
+          Sources: the three official <a href={primary} target="_blank" rel="noopener">NJDG &mdash; National Judicial
+          Data Grid</a> dashboards &mdash; district, High Court and Supreme Court. The national figure is their sum.
+          Read {fetchedAt ? fmtWhen(fetchedAt) : ""}.
           Free &amp; open &middot; not for use as legal evidence. &middot; Imagery via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>.
         </p>
         <div className="caveats">
@@ -30,8 +32,10 @@ export default function Footer({
             &ldquo;Updated on&rdquo; footer is a portal label, not a reliable data date.
           </span></p>
           <p className="cav"><span className="ic"><Info size={15} /></span><span>
-            Scope is <b>district &amp; subordinate courts</b>{" "}&mdash; India&rsquo;s trial courts, where the great
-            majority of cases live. High Courts, the Supreme Court and per-state views are being added.
+            The headline is a <b>derived national total</b>{" "}&mdash; the sum of three official NJDG figures
+            (district, High Court, Supreme Court), not a single published number. The <em>by-age</em> chart
+            covers district + High Courts only (the Supreme Court dashboard publishes no age split &mdash; about
+            0.02% of the pile). Per-state views are being added.
           </span></p>
           <p className="cav"><span className="ic"><Info size={15} /></span><span>
             We report on <b>systems</b>{" "}&mdash; states, districts, courts &mdash; never on named individual

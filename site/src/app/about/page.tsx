@@ -34,18 +34,23 @@ export default function About() {
 
             <h2 id="sources">Where the numbers come from</h2>
             <p>
-              Everything on the Pulse page is read from the <a href="https://njdg.ecourts.gov.in/njdg_v3/" target="_blank" rel="noopener">National
-              Judicial Data Grid (NJDG)</a>, the official dashboard run under the Supreme Court&rsquo;s eCourts
-              project. Courts across India feed it daily. We read the public page a browser would &mdash; at a
-              gentle, human pace &mdash; and record what it says. We don&rsquo;t bypass any security, solve any
+              Everything on the Pulse page is read from the <b>National Judicial Data Grid (NJDG)</b>, the
+              official dashboard run under the Supreme Court&rsquo;s eCourts project. Courts across India feed it
+              daily. NJDG publishes it as three separate dashboards &mdash; <a href="https://njdg.ecourts.gov.in/njdg_v3/" target="_blank" rel="noopener">district
+              &amp; subordinate courts</a>, <a href="https://njdg.ecourts.gov.in/hcnjdg_v2/" target="_blank" rel="noopener">the
+              High Courts</a>, and <a href="https://scdg.sci.gov.in/scnjdg/" target="_blank" rel="noopener">the
+              Supreme Court</a> &mdash; and we read all three. We read the public page a browser would &mdash; at
+              a gentle, human pace &mdash; and record what it says. We don&rsquo;t bypass any security, solve any
               CAPTCHAs, or touch private records. The raw readings are saved in the open, so anyone can check
               our numbers against the source.
             </p>
             <div className="callout">
               <p>
-                Today this covers <b>district &amp; subordinate courts</b>{" "}&mdash; India&rsquo;s trial courts,
-                where the overwhelming majority of cases are heard. High Courts, the Supreme Court, and a
-                state-by-state map are being added next.
+                The headline national figure is a <b>derived total</b>{" "}&mdash; we add the three official
+                dashboard figures together; NJDG doesn&rsquo;t publish a single all-India number. We show the
+                split by level so the sum is never a black box. The <b>by-age</b> chart covers district + High
+                Courts only, because the Supreme Court dashboard publishes no age breakdown (it&rsquo;s about
+                0.02% of the pile). A state-by-state map is being added next.
               </p>
             </div>
 
@@ -122,7 +127,7 @@ export default function About() {
             <div className="rail">
               <p className="rail-h">At a glance</p>
               <div className="rail-row"><span className="rail-k">Source</span><span className="rail-v">NJDG (official)</span></div>
-              <div className="rail-row"><span className="rail-k">Scope</span><span className="rail-v">District courts</span></div>
+              <div className="rail-row"><span className="rail-k">Scope</span><span className="rail-v">All court levels</span></div>
               <div className="rail-row"><span className="rail-k">Refreshed</span><span className="rail-v">Daily</span></div>
               <div className="rail-row"><span className="rail-k">Cost</span><span className="rail-v">Free &amp; open</span></div>
               <div className="rail-row"><span className="rail-k">For</span><span className="rail-v">Anyone</span></div>
@@ -130,7 +135,7 @@ export default function About() {
           </aside>
         </div>
       </div>
-      <Footer fetchedAt={meta.fetched_at} url={meta.url} />
+      <Footer fetchedAt={meta.fetched_at} sources={meta.sources} />
     </>
   );
 }

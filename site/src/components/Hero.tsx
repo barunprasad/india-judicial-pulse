@@ -15,7 +15,7 @@ export default function Hero({ record }: { record: CourtRecord }) {
       <p className="hero-approx num" data-animate>that&rsquo;s about {human(P.total)} cases</p>
       <p className="hero-cap" data-animate>
         A <b style={{ color: "var(--ink)" }}>pending</b>{" "}case is one filed but not yet decided. This is the
-        country&rsquo;s district-court backlog, in one number.
+        country&rsquo;s entire court backlog &mdash; district, High Court and Supreme Court &mdash; in one number.
       </p>
       <div data-animate><BacklogTicker netPerMonth={lm.net_backlog_change} /></div>
       <div data-animate><SplitBar total={P.total} civil={P.civil} criminal={P.criminal} centered /></div>
