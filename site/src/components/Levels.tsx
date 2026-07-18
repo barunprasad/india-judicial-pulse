@@ -31,6 +31,11 @@ export default function Levels({ levels, nationalTotal }: { levels: Record<Level
             <h3 className="level-h">{lv.label}</h3>
             <div className="level-num">{grp(lv.pending.total)}</div>
             <div className="level-meta mono">{pct} of the pile &middot; ~{human(lv.pending.total)} pending</div>
+            {lv.stale ? (
+              <div className="level-stale mono" title="This court's dashboard was unreachable from our servers on the last run, so we're showing the figure we last read directly.">
+                &#9888; carried forward{lv.as_of ? ` · as of ${new Date(lv.as_of).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}` : ""}
+              </div>
+            ) : null}
             <p className="level-desc">{DESC[k]}</p>
           </div>
         );

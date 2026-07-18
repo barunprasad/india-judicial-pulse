@@ -20,10 +20,14 @@ const DIRS = {
 const HISTORY_FILE = join(DIRS.history, 'national.jsonl');
 
 // The three court levels of the National Judicial Data Grid.
+// `critical`: district + High Courts (99.98% of the pile) MUST fetch fresh or the run fails.
+// The Supreme Court's own site (scdg.sci.gov.in, ~0.017% of the pile) geo-blocks some data-
+// centre IPs (e.g. CI runners); when it's unreachable we carry its last-known value forward
+// and mark it stale, rather than fail the whole national update. See README / carry-forward.
 const SOURCES = [
-  { level: 'district', label: 'District & subordinate courts', url: 'https://njdg.ecourts.gov.in/njdg_v3/', hasAge: true },
-  { level: 'high_court', label: 'High Courts', url: 'https://njdg.ecourts.gov.in/hcnjdg_v2/', hasAge: true },
-  { level: 'supreme_court', label: 'Supreme Court', url: 'https://scdg.sci.gov.in/scnjdg/', hasAge: false },
+  { level: 'district', label: 'District & subordinate courts', url: 'https://njdg.ecourts.gov.in/njdg_v3/', hasAge: true, critical: true },
+  { level: 'high_court', label: 'High Courts', url: 'https://njdg.ecourts.gov.in/hcnjdg_v2/', hasAge: true, critical: true },
+  { level: 'supreme_court', label: 'Supreme Court', url: 'https://scdg.sci.gov.in/scnjdg/', hasAge: false, critical: false },
 ];
 
 const AGE = ['under_1yr', 'y1_to_3', 'y3_to_5', 'y5_to_10', 'above_10yr'];
@@ -104,6 +108,12 @@ const lastRow = () => {
   const lines = readFileSync(HISTORY_FILE, 'utf8').trim().split('\n').filter(Boolean);
   return lines.length ? JSON.parse(lines.at(-1)) : null;
 };
+// The previous committed record — the source we carry a level forward from when its
+// dashboard is unreachable this run.
+const priorLatest = () => {
+  try { return JSON.parse(readFileSync(join(ROOT, 'data', 'latest.json'), 'utf8')); }
+  catch { return null; }
+};
 const unchanged = (a, b) => a && b && a.pending_total === b.pending_total && a.instituted_total === b.instituted_total && a.disposed_total === b.disposed_total;
 
 async function main() {
@@ -113,6 +123,8 @@ async function main() {
   const levels = {};
   const levelMeta = {};
   const problems = [];
+  const carried = [];
+  const prior = priorLatest();
   let fetched_at = new Date().toISOString();
 
   for (const src of SOURCES) {
@@ -121,7 +133,18 @@ async function main() {
     try {
       f = await fetchNjdgHome(src.url);
     } catch (e) {
-      problems.push(`${src.level}: fetch failed — ${e.message}`);
+      // Non-critical level unreachable (Supreme Court's separate site blocking our IP):
+      // carry its last-known value forward and mark it stale, so the daily district + High
+      // Court update still publishes. We reuse a REAL prior figure and disclose the date —
+      // never invent or silently substitute. A critical level (or one with no prior) fails.
+      const p = prior?.levels?.[src.level];
+      if (!src.critical && p && p.pending?.total > 0) {
+        levels[src.level] = { ...p, label: src.label, url: src.url, stale: true, as_of: prior.meta?.fetched_at };
+        carried.push(src.level);
+        console.warn(`   ⚠ unreachable (${e.message}); carrying forward ${fmt(p.pending.total)} from ${prior.meta?.fetched_at}`);
+      } else {
+        problems.push(`${src.level}: fetch failed — ${e.message}`);
+      }
       continue;
     }
     fetched_at = f.fetched_at;
@@ -132,7 +155,7 @@ async function main() {
     console.log(`   pending ${fmt(rec.pending.total)}  (civil ${fmt(rec.pending.civil)} / criminal ${fmt(rec.pending.criminal)})`);
   }
 
-  if (SOURCES.some((s) => !levels[s.level])) problems.push('one or more levels failed to parse — refusing to write a partial national total');
+  if (SOURCES.some((s) => !levels[s.level])) problems.push('a critical level failed (or a level failed with no prior value to carry forward) — refusing to write a partial national total');
 
   if (problems.length) {
     const path = join(DIRS.rejected, `national-${stamp}.json`);
@@ -144,13 +167,14 @@ async function main() {
   }
 
   const national = combine(levels);
-  const meta = { fetched_at, sources: SOURCES.map((s) => ({ level: s.level, url: s.url })) };
+  const meta = { fetched_at, sources: SOURCES.map((s) => ({ level: s.level, url: s.url })), carried_forward: carried };
   const out = { meta, national, levels };
 
   writeFileSync(join(DIRS.snapshots, `national-${stamp}.json`), JSON.stringify(out, null, 2));
   writeFileSync(join(ROOT, 'data', 'latest.json'), JSON.stringify(out, null, 2));
 
   const row = toRow(national, levels, meta);
+  if (carried.length) row.carried_forward = carried.join(',');
   const prev = lastRow();
   if (unchanged(row, prev)) {
     console.log('\n• headline figures unchanged since last run — history NOT appended (idempotent).');
@@ -164,7 +188,7 @@ async function main() {
   console.log(`  pending (total) : ${fmt(national.pending.total)}   (civil ${fmt(national.pending.civil)} / criminal ${fmt(national.pending.criminal)})`);
   console.log(`     district     : ${fmt(levels.district.pending.total)}`);
   console.log(`     high courts  : ${fmt(levels.high_court.pending.total)}`);
-  console.log(`     supreme court: ${fmt(levels.supreme_court.pending.total)}`);
+  console.log(`     supreme court: ${fmt(levels.supreme_court.pending.total)}${levels.supreme_court.stale ? `  ⚠ carried forward from ${levels.supreme_court.as_of}` : ''}`);
   console.log(`  last month      : ${fmt(lm.instituted.total)} filed → ${fmt(lm.disposed.total)} disposed`);
   console.log(`  clearance       : ${lm.monthly_clearance_rate_pct}%   net ${lm.net_backlog_change > 0 ? '+' : ''}${fmt(lm.net_backlog_change)}`);
   console.log(`  pending > 3 yrs : ${national.derived.pct_pending_over_3yr}%   > 10 yrs: ${national.age_profile.above_10yr.pct_of_pending}%`);

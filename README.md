@@ -52,6 +52,14 @@ combine ─► national total ─► dedupe vs last row ─► append data/histo
 - **Validation is load-bearing.** A parse that fails sanity bounds or internal
   consistency (civil + criminal = total, age buckets ≈ total) is written to
   `data/rejected/` and the run exits non-zero — it never appends a bad row.
+- **Resilient to the Supreme Court's site (carry-forward).** District + High Courts are
+  *critical* — they must fetch fresh or the run fails. The SC's own site
+  (`scdg.sci.gov.in`, ~0.017% of the pile) geo-blocks some datacentre IPs (e.g. GitHub CI
+  runners) though it serves residential ones. When it's unreachable, the pipeline **carries
+  its last-known value forward**, marks it `stale`/`as_of` in `latest.json`
+  (`meta.carried_forward`), and the site shows "carried forward · as of &lt;date&gt;" on that
+  level — so the daily district + High Court update still publishes and nothing is invented
+  or silently substituted. Each fetch has a timeout + 3 retries and surfaces the real cause.
 - **Idempotent.** If the headline figures are unchanged since the last row, it saves an
   audit snapshot but does not append — safe to run as often as you like.
 

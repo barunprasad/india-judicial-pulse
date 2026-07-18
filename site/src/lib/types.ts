@@ -30,6 +30,11 @@ export interface LevelSummary {
   label: string;
   url?: string;
   pending: { total: number; civil: number; criminal: number };
+  // Set when this level's dashboard was unreachable and its last-known value was carried
+  // forward (e.g. the Supreme Court site blocking the daily CI runner). `as_of` is the date
+  // that carried figure was actually read — surfaced on the site so it's never silent.
+  stale?: boolean;
+  as_of?: string;
 }
 
 export type LevelKey = "district" | "high_court" | "supreme_court";
@@ -37,6 +42,7 @@ export type LevelKey = "district" | "high_court" | "supreme_court";
 export interface SnapshotMeta {
   fetched_at: string;
   sources?: { level: string; url: string }[];
+  carried_forward?: string[];
 }
 
 export interface LatestFile {
