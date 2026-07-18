@@ -1,0 +1,383 @@
+<!-- India Judicial Pulse — national observability view over NJDG district-court data.
+     Self-contained: reads live data/latest.json + data/history/national.jsonl when served
+     from the repo; falls back to the embedded SEED below when opened standalone. -->
+<style>
+  .jp-root {
+    color-scheme: light;
+    /* cool-biased institutional neutrals + one blue accent; civil=blue, criminal=orange */
+    --plane:      #eaeef3;
+    --surface:    #ffffff;
+    --surface-2:  #f3f6fa;
+    --ink:        #0e1626;
+    --ink-2:      #48546a;
+    --muted:      #78839a;
+    --grid:       #e4e9f1;
+    --border:     rgba(14,22,38,0.11);
+    --accent:     #2a78d6;   /* blue  — primary + civil */
+    --criminal:   #eb6834;   /* orange — criminal */
+    --good:       #0f8a10;
+    --good-ink:   #0a6b0b;
+    --warn-ink:   #9a6a06;
+    --critical:   #cf3a3a;
+    --shadow:     0 1px 2px rgba(14,22,38,.05), 0 8px 24px -14px rgba(14,22,38,.18);
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .jp-root { color-scheme: dark;
+      --plane:#080b11; --surface:#121821; --surface-2:#1a212c; --ink:#eef3fa; --ink-2:#a7b2c4;
+      --muted:#6d7789; --grid:#222a37; --border:rgba(255,255,255,.09);
+      --accent:#3f8ce8; --criminal:#df6636; --good:#2bad2b; --good-ink:#4cc24c;
+      --warn-ink:#e2a52a; --critical:#e75c5c;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -16px rgba(0,0,0,.7); }
+  }
+  :root[data-theme="dark"] .jp-root { color-scheme: dark;
+      --plane:#080b11; --surface:#121821; --surface-2:#1a212c; --ink:#eef3fa; --ink-2:#a7b2c4;
+      --muted:#6d7789; --grid:#222a37; --border:rgba(255,255,255,.09);
+      --accent:#3f8ce8; --criminal:#df6636; --good:#2bad2b; --good-ink:#4cc24c;
+      --warn-ink:#e2a52a; --critical:#e75c5c;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -16px rgba(0,0,0,.7); }
+
+  .jp-root { background:var(--plane); color:var(--ink); font-family:var(--sans);
+    line-height:1.45; -webkit-font-smoothing:antialiased; min-height:100vh;
+    padding:clamp(16px,4vw,44px) clamp(14px,4vw,44px) 64px; }
+  .jp-wrap { max-width:1120px; margin:0 auto; }
+  .jp-root *,::before,::after { box-sizing:border-box; }
+
+  /* ---- masthead ---- */
+  .jp-top { display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end;
+    justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:20px; }
+  .eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 8px; }
+  h1.jp-title { font-size:clamp(26px,4.4vw,40px); line-height:1.02; letter-spacing:-.02em;
+    font-weight:760; margin:0; text-wrap:balance; }
+  .jp-sub { color:var(--ink-2); font-size:14.5px; margin:8px 0 0; max-width:56ch; }
+  .jp-status { display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+  .live { display:inline-flex; align-items:center; gap:7px; font-family:var(--mono);
+    font-size:11.5px; color:var(--ink-2); background:var(--surface); border:1px solid var(--border);
+    border-radius:999px; padding:5px 11px; box-shadow:var(--shadow); }
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 22%,transparent); }
+  .btn-theme { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--ink-2);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 10px;
+    cursor:pointer; text-transform:uppercase; }
+  .btn-theme:hover { color:var(--ink); border-color:color-mix(in srgb,var(--accent) 45%,var(--border)); }
+  .btn-theme:focus-visible,a:focus-visible,details:focus-within>summary { outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ---- hero ---- */
+  .hero { display:grid; grid-template-columns:1.35fr 1fr; gap:24px; margin:26px 0 22px;
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    box-shadow:var(--shadow); padding:clamp(20px,3vw,32px); }
+  @media (max-width:720px){ .hero{ grid-template-columns:1fr; } }
+  .hero-num { font-size:clamp(46px,8.4vw,84px); font-weight:780; letter-spacing:-.035em;
+    line-height:.9; font-variant-numeric:tabular-nums; margin:2px 0 0; }
+  .hero-cap { color:var(--ink-2); font-size:14.5px; margin:14px 0 0; max-width:34ch; }
+  .hero-approx { font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .chip { display:inline-flex; align-items:center; gap:7px; font-family:var(--mono); font-size:12px;
+    padding:6px 11px; border-radius:8px; border:1px solid var(--border); margin-top:18px; }
+  .chip.warn { color:var(--warn-ink); background:color-mix(in srgb,var(--warn-ink) 9%,var(--surface)); border-color:color-mix(in srgb,var(--warn-ink) 30%,var(--border)); }
+  .chip.crit { color:var(--critical); background:color-mix(in srgb,var(--critical) 9%,var(--surface)); border-color:color-mix(in srgb,var(--critical) 32%,var(--border)); }
+  .chip.neut { color:var(--ink-2); background:var(--surface-2); }
+  .split { align-self:center; }
+  .split h3 { font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted); margin:0 0 12px; font-weight:600; }
+  .splitbar { display:flex; height:20px; border-radius:6px; overflow:hidden; gap:2px; background:var(--surface-2); }
+  .splitbar > span { display:block; }
+  .legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:12.5px; color:var(--ink-2); }
+  .legend b { font-family:var(--mono); font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .sw { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:baseline; }
+
+  /* ---- KPI tiles ---- */
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:22px 0; }
+  @media (max-width:860px){ .kpis{ grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:440px){ .kpis{ grid-template-columns:1fr;} }
+  .tile { background:var(--surface); border:1px solid var(--border); border-radius:13px;
+    padding:16px 16px 15px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+  .tile::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); opacity:.9; }
+  .tile.s-crit::before{ background:var(--critical);} .tile.s-warn::before{ background:var(--warn-ink);} .tile.s-good::before{ background:var(--good);}
+  .tile .k-lab { font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .tile .k-val { font-size:31px; font-weight:730; letter-spacing:-.02em; margin:9px 0 2px; font-variant-numeric:tabular-nums; }
+  .tile .k-sub { font-size:12.5px; color:var(--ink-2); font-family:var(--mono); }
+  .meter { height:6px; border-radius:4px; background:var(--surface-2); margin:11px 0 3px; position:relative; overflow:hidden; }
+  .meter > i { display:block; height:100%; border-radius:4px; }
+  .meter .mark100 { position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink-2); opacity:.55; }
+
+  /* ---- panels & charts ---- */
+  .grid2 { display:grid; grid-template-columns:1.5fr 1fr; gap:16px; }
+  @media (max-width:860px){ .grid2{ grid-template-columns:1fr;} }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:15px;
+    box-shadow:var(--shadow); padding:clamp(16px,2.4vw,24px); margin-bottom:16px; }
+  .panel h2 { font-size:16px; font-weight:680; letter-spacing:-.01em; margin:0; }
+  .panel .p-note { font-family:var(--mono); font-size:11px; color:var(--muted); margin:4px 0 0; }
+  .p-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
+
+  .agerow { display:grid; grid-template-columns:96px 1fr; gap:12px; align-items:center; margin:13px 0; }
+  .agerow .a-lab { font-family:var(--mono); font-size:12px; color:var(--ink-2); text-align:right; }
+  .agerow .a-lab small { display:block; color:var(--muted); font-size:10.5px; }
+  .a-track { position:relative; }
+  .a-bar { display:flex; height:22px; gap:2px; align-items:stretch; transition:width .6s cubic-bezier(.2,.7,.2,1); }
+  .a-bar > span { border-radius:3px; min-width:2px; cursor:default; }
+  .a-bar > span:first-child{ border-radius:5px 3px 3px 5px; }
+  .a-bar .a-total { font-family:var(--mono); font-size:11.5px; color:var(--ink-2); align-self:center;
+    padding-left:9px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+
+  .trend-svg { width:100%; height:210px; display:block; overflow:visible; }
+  .trend-empty { font-size:13px; color:var(--ink-2); }
+  .trend-empty b { font-family:var(--mono); color:var(--ink); }
+
+  .demo { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .demo .tile .k-val{ font-size:26px; }
+
+  .foot { margin-top:30px; border-top:1px solid var(--border); padding-top:20px; color:var(--ink-2); font-size:13px; }
+  .foot .caveats { display:grid; gap:9px; margin:14px 0 0; }
+  .foot .cav { display:grid; grid-template-columns:18px 1fr; gap:9px; align-items:start; }
+  .foot .cav .ic { font-family:var(--mono); color:var(--muted); font-size:12px; line-height:1.5; }
+  .foot code { font-family:var(--mono); font-size:12px; background:var(--surface-2); padding:1px 5px; border-radius:4px; }
+  .foot a { color:var(--accent); text-decoration:none; }
+  .foot a:hover { text-decoration:underline; }
+  .soon { display:flex; align-items:center; justify-content:center; text-align:center; min-height:130px;
+    border:1px dashed color-mix(in srgb,var(--muted) 55%,transparent); border-radius:12px; color:var(--muted);
+    font-family:var(--mono); font-size:12px; padding:18px; background:repeating-linear-gradient(45deg,transparent,transparent 9px,color-mix(in srgb,var(--muted) 6%,transparent) 9px,color-mix(in srgb,var(--muted) 6%,transparent) 10px); }
+
+  details.tableview { margin-top:14px; }
+  details.tableview summary { font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:var(--ink-2);
+    cursor:pointer; text-transform:uppercase; list-style:none; display:inline-flex; gap:7px; align-items:center; }
+  details.tableview summary::before{ content:"+"; color:var(--accent); font-weight:700; }
+  details[open].tableview summary::before{ content:"\2212"; }
+  table.jp { width:100%; border-collapse:collapse; margin-top:12px; font-size:12.5px; font-variant-numeric:tabular-nums; }
+  table.jp th,table.jp td { text-align:right; padding:6px 10px; border-bottom:1px solid var(--grid); }
+  table.jp th:first-child,table.jp td:first-child{ text-align:left; font-family:var(--mono); color:var(--ink-2); }
+  table.jp thead th { font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+
+  .tip { position:fixed; z-index:50; pointer-events:none; opacity:0; transition:opacity .12s;
+    background:var(--ink); color:var(--surface); font-family:var(--mono); font-size:11.5px;
+    padding:6px 9px; border-radius:7px; box-shadow:0 6px 20px -6px rgba(0,0,0,.5); max-width:240px; }
+  :root[data-theme="dark"] .tip,@media (prefers-color-scheme:dark){ .tip{ background:#e9edf3; color:#0d1119; } }
+
+  @media (prefers-reduced-motion:reduce){ .a-bar{ transition:none; } }
+</style>
+
+<div class="jp-root">
+ <div class="jp-wrap">
+  <header class="jp-top">
+    <div>
+      <p class="eyebrow">National Judicial Data Grid &middot; District &amp; subordinate courts</p>
+      <h1 class="jp-title">India Judicial Pulse</h1>
+      <p class="jp-sub">What is happening in the country&rsquo;s trial courts &mdash; and which way it is moving. A public snapshot of pendency, taken from NJDG and kept over time.</p>
+    </div>
+    <div class="jp-status">
+      <span class="live"><span class="dot"></span><span id="st-fetched">loading&hellip;</span></span>
+      <button class="btn-theme" id="themeBtn" type="button" aria-label="Toggle colour theme">Theme</button>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Headline pendency">
+    <div>
+      <p class="eyebrow">Cases pending now</p>
+      <div class="hero-num" id="h-total">&mdash;</div>
+      <p class="hero-approx" id="h-approx"></p>
+      <p class="hero-cap">pending in district &amp; subordinate courts across India</p>
+      <div id="h-trend"></div>
+    </div>
+    <div class="split">
+      <h3>Civil &amp; criminal</h3>
+      <div class="splitbar" id="h-split" role="img" aria-label="Share of pending cases that are civil vs criminal"></div>
+      <div class="legend" id="h-splitleg"></div>
+    </div>
+  </section>
+
+  <section class="kpis" id="kpis" aria-label="Key indicators"></section>
+
+  <div class="grid2">
+    <div class="panel" aria-label="Pending cases by age">
+      <div class="p-head">
+        <div><h2>How stuck is the backlog?</h2><p class="p-note">pending cases by age &middot; civil + criminal</p></div>
+        <div class="legend" id="age-leg"></div>
+      </div>
+      <div id="agechart"></div>
+      <details class="tableview"><summary>View data table</summary><div id="agetable"></div></details>
+    </div>
+
+    <div class="panel" aria-label="Pending cases over time">
+      <div class="p-head"><div><h2>Trend</h2><p class="p-note" id="trend-note">total pending over time</p></div></div>
+      <div id="trend"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel" aria-label="Filings by litigant group">
+      <div class="p-head"><div><h2>Who is filing</h2><p class="p-note">pending cases filed by these groups</p></div></div>
+      <div class="demo" id="demo"></div>
+    </div>
+    <div class="panel" aria-label="Geographic view (planned)">
+      <div class="p-head"><div><h2>By state &amp; district</h2><p class="p-note">geographic drill-down</p></div></div>
+      <div class="soon">State &amp; district map arrives with the drill-down feed.<br>The scraper is built &amp; verified; this view wires up next.</div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div id="src"></div>
+    <div class="caveats">
+      <div class="cav"><span class="ic">i</span><span>The <b>monthly clearance rate</b> is a single-month figure and is noisy &mdash; read the <em>trend</em> across snapshots, not any one month. The official <em>annual</em> clearance rate runs higher (~91%).</span></div>
+      <div class="cav"><span class="ic">i</span><span>Time is anchored on <code>fetched_at</code>. NJDG&rsquo;s own <code>Updated on</code> footer is a portal label, not a reliable data date.</span></div>
+      <div class="cav"><span class="ic">i</span><span>Scope is <b>national, district &amp; subordinate courts</b> &mdash; the level NJDG serves on its homepage. High Courts, the Supreme Court, and per-state breakdowns are separate feeds.</span></div>
+      <div class="cav"><span class="ic">i</span><span>Reports <b>systems</b> &mdash; states, districts, courts &mdash; never named individual judges or lawyers.</span></div>
+    </div>
+  </footer>
+ </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+// ---------- embedded seed (used when opened standalone / as a preview) ----------
+const SEED_LATEST = {"meta":{"url":"https://njdg.ecourts.gov.in/njdg_v3/","fetched_at":"2026-07-18T08:30:24.804Z"},"record":{"page_updated_label":"11-08-2025","pending":{"total":49867072,"civil":11337624,"criminal":38529448},"last_month":{"instituted":{"total":1801610},"disposed":{"total":1279998},"monthly_clearance_rate_pct":71.05,"net_backlog_change":521612},"age_profile":{"under_1yr":{"civil":4154314,"criminal":13039309,"total":17193623,"pct_of_pending":34},"y1_to_3":{"civil":2989912,"criminal":9115731,"total":12105643,"pct_of_pending":24},"y3_to_5":{"civil":1624368,"criminal":5431710,"total":7056078,"pct_of_pending":14},"y5_to_10":{"civil":1708676,"criminal":6939167,"total":8647843,"pct_of_pending":17},"above_10yr":{"civil":860354,"criminal":4003531,"total":4863885,"pct_of_pending":10}},"derived":{"pct_pending_over_3yr":41,"pct_pending_over_5yr":27},"litigants":{"senior_citizen_filed":3317513,"women_filed":3963801}}};
+const SEED_HISTORY = [{"fetched_at":"2026-07-18T08:30:24.804Z","pending_total":49867072}];
+
+// ---------- helpers ----------
+const $ = (s,r=document)=>r.querySelector(s);
+const IN = new Intl.NumberFormat('en-IN');
+const grp = n => n==null?'n/a':IN.format(Math.round(n));
+const crore = n => (n/1e7).toFixed(2).replace(/\.?0+$/,'')+' crore';
+const AGE = {under_1yr:['Under 1 yr'],y1_to_3:['1-3 yrs'],y3_to_5:['3-5 yrs'],y5_to_10:['5-10 yrs'],above_10yr:['Over 10 yrs']};
+const CIVIL='var(--accent)', CRIM='var(--criminal)';
+
+function relTime(iso){ const d=new Date(iso), s=(Date.now()-d.getTime())/1000;
+  const u=[[86400,'d'],[3600,'h'],[60,'m']]; for(const [k,l] of u){ if(s>=k) return Math.floor(s/k)+l+' ago'; }
+  return 'just now'; }
+function dmy(iso){ const d=new Date(iso); return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}); }
+
+// ---------- tooltip ----------
+const tip=$('#tip');
+function bindTip(el,html){ el.addEventListener('pointermove',e=>{ tip.innerHTML=html; tip.style.opacity=1;
+  const pad=14; let x=e.clientX+pad, y=e.clientY+pad;
+  if(x+tip.offsetWidth>innerWidth) x=e.clientX-tip.offsetWidth-pad;
+  tip.style.left=x+'px'; tip.style.top=y+'px'; });
+  el.addEventListener('pointerleave',()=>tip.style.opacity=0); }
+
+// ---------- render ----------
+function render(latest, history){
+  const r = latest.record, m = latest.meta;
+  const P = r.pending;
+
+  // status + source
+  $('#st-fetched').textContent = 'fetched '+relTime(m.fetched_at);
+  $('#src').innerHTML = 'Source: <a href="'+m.url+'" target="_blank" rel="noopener">NJDG &mdash; National Judicial Data Grid</a> '
+    + '&middot; fetched '+new Date(m.fetched_at).toISOString().replace('T',' ').slice(0,16)+' UTC'
+    + '&middot; free &amp; open &middot; not for legal evidence.';
+
+  // hero
+  $('#h-total').textContent = grp(P.total);
+  $('#h-approx').textContent = '~ '+crore(P.total);
+
+  // civil/criminal split bar
+  const cPct = P.civil/P.total*100, kPct=P.criminal/P.total*100;
+  $('#h-split').innerHTML = '<span style="width:'+cPct+'%;background:'+CIVIL+'"></span><span style="width:'+kPct+'%;background:'+CRIM+'"></span>';
+  $('#h-splitleg').innerHTML =
+    '<span><span class="sw" style="background:'+CIVIL+'"></span>Civil <b>'+cPct.toFixed(0)+'%</b> &middot; '+grp(P.civil)+'</span>'+
+    '<span><span class="sw" style="background:'+CRIM+'"></span>Criminal <b>'+kPct.toFixed(0)+'%</b> &middot; '+grp(P.criminal)+'</span>';
+  bindTip($('#h-split'),'Civil '+grp(P.civil)+' &middot; Criminal '+grp(P.criminal));
+
+  // hero trend chip
+  const ht=$('#h-trend');
+  if(history.length>=2){
+    const prev=history[history.length-2], d=P.total-prev.pending_total;
+    const up=d>0; ht.innerHTML='<span class="chip '+(up?'crit':'')+'" '+(up?'':'style="color:var(--good-ink)"')+'>'+(up?'&#9650;':'&#9660;')+' '+grp(Math.abs(d))+' since '+dmy(prev.fetched_at)+' &middot; '+(up?'backlog grew':'backlog fell')+'</span>';
+  } else {
+    ht.innerHTML='<span class="chip neut">Baseline snapshot &middot; the trend appears after the next daily capture</span>';
+  }
+
+  // KPI tiles
+  const lm=r.last_month, growing=lm.net_backlog_change>0;
+  const kpis=[
+    { lab:'Clearance rate (last month)', val:lm.monthly_clearance_rate_pct+'%', sub:'disposed &divide; filed',
+      meter:Math.min(lm.monthly_clearance_rate_pct,100), status:lm.monthly_clearance_rate_pct<100?'warn':'good',
+      note:lm.monthly_clearance_rate_pct<100?'below 100% &mdash; pile growing':'above 100% &mdash; pile shrinking' },
+    { lab:'Net change last month', val:(growing?'+':'')+grp(lm.net_backlog_change), sub:grp(lm.instituted.total)+' filed &rarr; '+grp(lm.disposed.total)+' disposed',
+      status:growing?'crit':'good' },
+    { lab:'Pending over 3 years', val:r.derived.pct_pending_over_3yr+'%', sub:grp(r.age_profile.y3_to_5.total+r.age_profile.y5_to_10.total+r.age_profile.above_10yr.total)+' cases', status:'warn' },
+    { lab:'Pending over 10 years', val:r.age_profile.above_10yr.pct_of_pending+'%', sub:grp(r.age_profile.above_10yr.total)+' cases', status:'warn' },
+  ];
+  $('#kpis').innerHTML = kpis.map(k=>{
+    const meter = k.meter!=null ? '<div class="meter"><i style="width:'+k.meter+'%;background:'+(k.status==='good'?'var(--good)':'var(--warn-ink)')+'"></i><span class="mark100" style="left:100%"></span></div>' : '';
+    return '<div class="tile s-'+k.status+'"><div class="k-lab">'+k.lab+'</div><div class="k-val">'+k.val+'</div>'+meter+'<div class="k-sub">'+(k.note||k.sub)+'</div></div>';
+  }).join('');
+
+  // age chart
+  const buckets=Object.keys(AGE);
+  const maxT=Math.max(...buckets.map(b=>r.age_profile[b].total));
+  $('#age-leg').innerHTML='<span><span class="sw" style="background:'+CIVIL+'"></span>Civil</span><span><span class="sw" style="background:'+CRIM+'"></span>Criminal</span>';
+  $('#agechart').innerHTML = buckets.map(b=>{
+    const a=r.age_profile[b], w=a.total/maxT*100, cw=a.civil/a.total*100, kw=a.criminal/a.total*100;
+    return '<div class="agerow"><div class="a-lab">'+AGE[b][0]+'<small>'+a.pct_of_pending+'% of all</small></div>'+
+      '<div class="a-track"><div class="a-bar" style="width:'+w+'%" data-b="'+b+'">'+
+      '<span data-seg="c" style="width:'+cw+'%;background:'+CIVIL+'"></span>'+
+      '<span data-seg="k" style="width:'+kw+'%;background:'+CRIM+'"></span>'+
+      '<span class="a-total">'+grp(a.total)+'</span></div></div></div>';
+  }).join('');
+  buckets.forEach(b=>{ const a=r.age_profile[b], row=$('.a-bar[data-b="'+b+'"]');
+    bindTip(row.querySelector('[data-seg="c"]'), AGE[b][0]+' &middot; Civil<br>'+grp(a.civil));
+    bindTip(row.querySelector('[data-seg="k"]'), AGE[b][0]+' &middot; Criminal<br>'+grp(a.criminal)); });
+  // age table
+  $('#agetable').innerHTML='<table class="jp"><thead><tr><th>Age</th><th>Civil</th><th>Criminal</th><th>Total</th><th>% of all</th></tr></thead><tbody>'+
+    buckets.map(b=>{const a=r.age_profile[b];return '<tr><td>'+AGE[b][0]+'</td><td>'+grp(a.civil)+'</td><td>'+grp(a.criminal)+'</td><td>'+grp(a.total)+'</td><td>'+a.pct_of_pending+'%</td></tr>';}).join('')+'</tbody></table>';
+
+  // trend
+  drawTrend(history);
+
+  // demographics
+  $('#demo').innerHTML=[
+    {l:'Filed by women',v:r.litigants.women_filed},
+    {l:'Filed by senior citizens',v:r.litigants.senior_citizen_filed},
+  ].map(d=>'<div class="tile"><div class="k-lab">'+d.l+'</div><div class="k-val">'+grp(d.v)+'</div><div class="k-sub">pending cases</div></div>').join('');
+}
+
+function drawTrend(history){
+  const el=$('#trend'), note=$('#trend-note');
+  if(history.length<2){
+    note.textContent='one snapshot so far';
+    el.innerHTML='<div class="trend-empty">The line grows a point per day as the pipeline runs.<br>Latest: <b>'+grp(history[0].pending_total)+'</b> on '+dmy(history[0].fetched_at)+'.'+
+      '<svg class="trend-svg" viewBox="0 0 600 210" preserveAspectRatio="none" aria-hidden="true">'+
+      '<line x1="0" y1="150" x2="600" y2="150" stroke="var(--grid)"/>'+
+      '<circle cx="300" cy="150" r="5.5" fill="var(--accent)"/>'+
+      '<circle cx="300" cy="150" r="11" fill="none" stroke="var(--accent)" stroke-opacity=".3"/></svg></div>';
+    return;
+  }
+  note.textContent=history.length+' snapshots';
+  const W=600,H=180,pad=8;
+  const xs=history.map((_,i)=>pad+i*(W-2*pad)/(history.length-1));
+  const ys=history.map(h=>h.pending_total);
+  const mn=Math.min(...ys)*0.999, mx=Math.max(...ys)*1.001;
+  const Y=v=>H-pad-(v-mn)/(mx-mn||1)*(H-2*pad);
+  const line=history.map((h,i)=>(i?'L':'M')+xs[i].toFixed(1)+' '+Y(h.pending_total).toFixed(1)).join(' ');
+  const area=line+' L'+xs[xs.length-1]+' '+(H-pad)+' L'+xs[0]+' '+(H-pad)+' Z';
+  const last=history.length-1;
+  el.innerHTML='<svg class="trend-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+
+    '<defs><linearGradient id="tg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".22"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>'+
+    '<path d="'+area+'" fill="url(#tg)"/><path d="'+line+'" fill="none" stroke="var(--accent)" stroke-width="2"/>'+
+    '<circle cx="'+xs[last].toFixed(1)+'" cy="'+Y(ys[last]).toFixed(1)+'" r="4.5" fill="var(--accent)"/></svg>';
+}
+
+// ---------- theme toggle ----------
+$('#themeBtn').addEventListener('click',()=>{
+  const root=document.documentElement;
+  const cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  root.setAttribute('data-theme',cur==='dark'?'light':'dark');
+});
+
+// ---------- load live data, fall back to seed ----------
+async function boot(){
+  let latest=SEED_LATEST, history=SEED_HISTORY;
+  const bases=['','../','./'];
+  for(const b of bases){
+    try{
+      const L=await fetch(b+'data/latest.json',{cache:'no-store'});
+      if(!L.ok) continue;
+      latest=await L.json();
+      try{ const H=await fetch(b+'data/history/national.jsonl',{cache:'no-store'});
+        if(H.ok){ history=(await H.text()).trim().split('\n').filter(Boolean).map(JSON.parse); } }catch(e){}
+      break;
+    }catch(e){/* offline / artifact host: keep seed */}
+  }
+  render(latest, history);
+}
+boot();
+</script>

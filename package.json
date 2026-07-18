@@ -1,0 +1,17 @@
+{
+  "name": "judicial-observability",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/snapshot.mjs",
+  "scripts": {
+    "snapshot": "node src/snapshot.mjs",
+    "probe": "node prototype/njdg_drill_test.mjs"
+  },
+  "keywords": ["judiciary", "india", "njdg", "open-data", "civic-tech"],
+  "author": "",
+  "license": "MIT",
+  "description": "Public-service observability for India's judicial pendency — snapshots NJDG over time.",
+  "dependencies": {
+    "playwright": "^1.61.1"
+  }
+}

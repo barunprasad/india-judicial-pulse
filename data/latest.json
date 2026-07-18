@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "url": "https://njdg.ecourts.gov.in/njdg_v3/",
+    "html_bytes": 160984,
+    "html_sha256": "12a6eb8e239af03100cdbe30813bf12538526c9b2df9c902cbfd1653b4e3b6a6",
+    "fetched_at": "2026-07-18T08:30:24.804Z"
+  },
+  "record": {
+    "parser_version": "1.0.0",
+    "court_level": "district_subordinate",
+    "scope": "national",
+    "page_updated_label": "11-08-2025",
+    "pending": {
+      "total": 49867072,
+      "civil": 11337624,
+      "criminal": 38529448
+    },
+    "last_month": {
+      "instituted": {
+        "total": 1801610,
+        "civil": 271193,
+        "criminal": 1530417
+      },
+      "disposed": {
+        "total": 1279998,
+        "civil": 214703,
+        "criminal": 1065295
+      },
+      "monthly_clearance_rate_pct": 71.05,
+      "net_backlog_change": 521612
+    },
+    "age_profile": {
+      "under_1yr": {
+        "civil": 4154314,
+        "criminal": 13039309,
+        "total": 17193623,
+        "pct_of_pending": 34
+      },
+      "y1_to_3": {
+        "civil": 2989912,
+        "criminal": 9115731,
+        "total": 12105643,
+        "pct_of_pending": 24
+      },
+      "y3_to_5": {
+        "civil": 1624368,
+        "criminal": 5431710,
+        "total": 7056078,
+        "pct_of_pending": 14
+      },
+      "y5_to_10": {
+        "civil": 1708676,
+        "criminal": 6939167,
+        "total": 8647843,
+        "pct_of_pending": 17
+      },
+      "above_10yr": {
+        "civil": 860354,
+        "criminal": 4003531,
+        "total": 4863885,
+        "pct_of_pending": 10
+      }
+    },
+    "derived": {
+      "pct_pending_over_3yr": 41,
+      "pct_pending_over_5yr": 27
+    },
+    "litigants": {
+      "senior_citizen_filed": 3317513,
+      "women_filed": 3963801
+    },
+    "_raw": {
+      "charts_args": [
+        "7183310",
+        "25490139",
+        "32673449",
+        "11337624",
+        "38529448",
+        "49867072",
+        "''",
+        "''",
+        "''",
+        "''",
+        "''",
+        "''",
+        "''",
+        "''",
+        "''",
+        "''"
+      ]
+    },
+    "_errors": []
+  }
+}

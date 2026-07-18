@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+
+# Debug/audit artifacts — kept locally, not versioned
+data/rejected/
+data/snapshots/
+
+# The time-series history (data/history/) IS committed — it's the whole point.
