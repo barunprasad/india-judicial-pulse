@@ -1,11 +1,11 @@
 {
   "meta": {
-    "fetched_at": "2026-07-18T22:18:04.823Z",
+    "fetched_at": "2026-07-19T05:32:28.315Z",
     "source": "https://njdg.ecourts.gov.in/njdg_v3/",
     "scope": "district & subordinate courts, by state",
-    "state_sum": 49844370,
-    "district_national": 49861223,
-    "coverage_pct": 99.97,
+    "state_sum": 49830289,
+    "district_national": 49830289,
+    "coverage_pct": 100,
     "count": 36
   },
   "states": [
@@ -14,9 +14,9 @@
       "code": "9~13",
       "is_ut": false,
       "pending": {
-        "total": 11950346,
-        "civil": 1887190,
-        "criminal": 10063156
+        "total": 11952760,
+        "civil": 1887713,
+        "criminal": 10065047
       }
     },
     {
@@ -44,9 +44,9 @@
       "code": "10~8",
       "is_ut": false,
       "pending": {
-        "total": 3764051,
-        "civil": 544672,
-        "criminal": 3219379
+        "total": 3765219,
+        "civil": 544965,
+        "criminal": 3220254
       }
     },
     {
@@ -104,9 +104,9 @@
       "code": "33~10",
       "is_ut": false,
       "pending": {
-        "total": 1782092,
-        "civil": 706220,
-        "criminal": 1075872
+        "total": 1782240,
+        "civil": 706278,
+        "criminal": 1075962
       }
     },
     {
@@ -124,9 +124,9 @@
       "code": "24~17",
       "is_ut": false,
       "pending": {
-        "total": 1602737,
-        "civil": 320570,
-        "criminal": 1282167
+        "total": 1592244,
+        "civil": 320527,
+        "criminal": 1271717
       }
     },
     {
@@ -134,9 +134,9 @@
       "code": "6~14",
       "is_ut": false,
       "pending": {
-        "total": 1528782,
-        "civil": 432929,
-        "criminal": 1095853
+        "total": 1526315,
+        "civil": 433320,
+        "criminal": 1092995
       }
     },
     {
@@ -144,9 +144,9 @@
       "code": "3~22",
       "is_ut": false,
       "pending": {
-        "total": 1019347,
-        "civil": 377689,
-        "criminal": 641658
+        "total": 1015506,
+        "civil": 378061,
+        "criminal": 637445
       }
     },
     {
@@ -164,9 +164,9 @@
       "code": "28~2",
       "is_ut": false,
       "pending": {
-        "total": 944062,
-        "civil": 438848,
-        "criminal": 505214
+        "total": 943779,
+        "civil": 439217,
+        "criminal": 504562
       }
     },
     {
@@ -234,9 +234,9 @@
       "code": "4~27",
       "is_ut": true,
       "pending": {
-        "total": 100405,
-        "civil": 24251,
-        "criminal": 76154
+        "total": 99678,
+        "civil": 24148,
+        "criminal": 75530
       }
     },
     {
