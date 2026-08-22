@@ -1,10 +1,10 @@
 {
   "meta": {
-    "fetched_at": "2026-08-21T03:16:50.913Z",
+    "fetched_at": "2026-08-22T03:07:51.935Z",
     "source": "https://njdg.ecourts.gov.in/njdg_v3/",
     "scope": "district & subordinate courts, by state",
-    "state_sum": 50908161,
-    "district_national": 50899903,
+    "state_sum": 50951814,
+    "district_national": 50941754,
     "coverage_pct": 100.02,
     "count": 36
   },
@@ -14,9 +14,9 @@
       "code": "9~13",
       "is_ut": false,
       "pending": {
-        "total": 13083428,
-        "civil": 1887604,
-        "criminal": 11195824
+        "total": 13109893,
+        "civil": 1887643,
+        "criminal": 11222250
       }
     },
     {
@@ -24,9 +24,9 @@
       "code": "27~1",
       "is_ut": false,
       "pending": {
-        "total": 6200562,
-        "civil": 1780816,
-        "criminal": 4419746
+        "total": 6206249,
+        "civil": 1781239,
+        "criminal": 4425010
       }
     },
     {
@@ -34,9 +34,9 @@
       "code": "19~16",
       "is_ut": false,
       "pending": {
-        "total": 4169135,
-        "civil": 653097,
-        "criminal": 3516038
+        "total": 4174544,
+        "civil": 653061,
+        "criminal": 3521483
       }
     },
     {
@@ -44,9 +44,9 @@
       "code": "10~8",
       "is_ut": false,
       "pending": {
-        "total": 3788317,
-        "civil": 547483,
-        "criminal": 3240834
+        "total": 3789223,
+        "civil": 547596,
+        "criminal": 3241627
       }
     },
     {
@@ -54,9 +54,9 @@
       "code": "8~9",
       "is_ut": false,
       "pending": {
-        "total": 2620889,
-        "civil": 483922,
-        "criminal": 2136967
+        "total": 2625882,
+        "civil": 484279,
+        "criminal": 2141603
       }
     },
     {
@@ -64,9 +64,9 @@
       "code": "29~3",
       "is_ut": false,
       "pending": {
-        "total": 2335355,
-        "civil": 1066878,
-        "criminal": 1268477
+        "total": 2335353,
+        "civil": 1066877,
+        "criminal": 1268476
       }
     },
     {
@@ -74,9 +74,9 @@
       "code": "23~23",
       "is_ut": false,
       "pending": {
-        "total": 2154834,
-        "civil": 439714,
-        "criminal": 1715120
+        "total": 2155707,
+        "civil": 439896,
+        "criminal": 1715811
       }
     },
     {
@@ -84,9 +84,9 @@
       "code": "21~11",
       "is_ut": false,
       "pending": {
-        "total": 1876936,
-        "civil": 269955,
-        "criminal": 1606981
+        "total": 1877465,
+        "civil": 269970,
+        "criminal": 1607495
       }
     },
     {
@@ -94,9 +94,9 @@
       "code": "33~10",
       "is_ut": false,
       "pending": {
-        "total": 1755704,
-        "civil": 700374,
-        "criminal": 1055330
+        "total": 1756142,
+        "civil": 700552,
+        "criminal": 1055590
       }
     },
     {
@@ -104,8 +104,8 @@
       "code": "7~26",
       "is_ut": true,
       "pending": {
-        "total": 1728669,
-        "civil": 218707,
+        "total": 1728658,
+        "civil": 218696,
         "criminal": 1509962
       }
     },
@@ -114,9 +114,9 @@
       "code": "32~4",
       "is_ut": false,
       "pending": {
-        "total": 1724852,
-        "civil": 523489,
-        "criminal": 1201363
+        "total": 1725082,
+        "civil": 523522,
+        "criminal": 1201560
       }
     },
     {
@@ -124,9 +124,9 @@
       "code": "24~17",
       "is_ut": false,
       "pending": {
-        "total": 1659931,
-        "civil": 320153,
-        "criminal": 1339778
+        "total": 1655137,
+        "civil": 318357,
+        "criminal": 1336780
       }
     },
     {
@@ -134,9 +134,9 @@
       "code": "6~14",
       "is_ut": false,
       "pending": {
-        "total": 1530122,
-        "civil": 435803,
-        "criminal": 1094319
+        "total": 1530704,
+        "civil": 435900,
+        "criminal": 1094804
       }
     },
     {
@@ -144,9 +144,9 @@
       "code": "3~22",
       "is_ut": false,
       "pending": {
-        "total": 1030362,
-        "civil": 384567,
-        "criminal": 645795
+        "total": 1030555,
+        "civil": 384538,
+        "criminal": 646017
       }
     },
     {
@@ -154,9 +154,9 @@
       "code": "36~29",
       "is_ut": false,
       "pending": {
-        "total": 1005239,
-        "civil": 340726,
-        "criminal": 664513
+        "total": 1005154,
+        "civil": 340697,
+        "criminal": 664457
       }
     },
     {
@@ -164,9 +164,9 @@
       "code": "28~2",
       "is_ut": false,
       "pending": {
-        "total": 932286,
-        "civil": 435867,
-        "criminal": 496419
+        "total": 932302,
+        "civil": 435865,
+        "criminal": 496437
       }
     },
     {
@@ -174,9 +174,9 @@
       "code": "2~5",
       "is_ut": false,
       "pending": {
-        "total": 615123,
-        "civil": 180270,
-        "criminal": 434853
+        "total": 615017,
+        "civil": 180334,
+        "criminal": 434683
       }
     },
     {
@@ -184,9 +184,9 @@
       "code": "18~6",
       "is_ut": false,
       "pending": {
-        "total": 603023,
-        "civil": 115690,
-        "criminal": 487333
+        "total": 603276,
+        "civil": 115721,
+        "criminal": 487555
       }
     },
     {
@@ -194,9 +194,9 @@
       "code": "20~7",
       "is_ut": false,
       "pending": {
-        "total": 572056,
-        "civil": 99515,
-        "criminal": 472541
+        "total": 571997,
+        "civil": 99546,
+        "criminal": 472451
       }
     },
     {
@@ -204,9 +204,9 @@
       "code": "22~18",
       "is_ut": false,
       "pending": {
-        "total": 497180,
-        "civil": 94955,
-        "criminal": 402225
+        "total": 498138,
+        "civil": 95038,
+        "criminal": 403100
       }
     },
     {
@@ -214,9 +214,9 @@
       "code": "1~12",
       "is_ut": true,
       "pending": {
-        "total": 360257,
-        "civil": 122732,
-        "criminal": 237525
+        "total": 360321,
+        "civil": 122772,
+        "criminal": 237549
       }
     },
     {
@@ -224,9 +224,9 @@
       "code": "5~15",
       "is_ut": false,
       "pending": {
-        "total": 307574,
-        "civil": 50600,
-        "criminal": 256974
+        "total": 308044,
+        "civil": 50628,
+        "criminal": 257416
       }
     },
     {
@@ -234,9 +234,9 @@
       "code": "4~27",
       "is_ut": true,
       "pending": {
-        "total": 100162,
-        "civil": 24460,
-        "criminal": 75702
+        "total": 100209,
+        "civil": 24478,
+        "criminal": 75731
       }
     },
     {
@@ -244,9 +244,9 @@
       "code": "16~20",
       "is_ut": false,
       "pending": {
-        "total": 72055,
-        "civil": 13843,
-        "criminal": 58212
+        "total": 72398,
+        "civil": 13871,
+        "criminal": 58527
       }
     },
     {
@@ -254,9 +254,9 @@
       "code": "30~30",
       "is_ut": false,
       "pending": {
-        "total": 62807,
-        "civil": 28476,
-        "criminal": 34331
+        "total": 62913,
+        "civil": 28484,
+        "criminal": 34429
       }
     },
     {
@@ -264,9 +264,9 @@
       "code": "34~35",
       "is_ut": true,
       "pending": {
-        "total": 36977,
-        "civil": 11394,
-        "criminal": 25583
+        "total": 36941,
+        "civil": 11385,
+        "criminal": 25556
       }
     },
     {
@@ -274,9 +274,9 @@
       "code": "17~21",
       "is_ut": false,
       "pending": {
-        "total": 18553,
-        "civil": 5361,
-        "criminal": 13192
+        "total": 18633,
+        "civil": 5356,
+        "criminal": 13277
       }
     },
     {
@@ -284,9 +284,9 @@
       "code": "12~36",
       "is_ut": false,
       "pending": {
-        "total": 15602,
-        "civil": 3795,
-        "criminal": 11807
+        "total": 15634,
+        "civil": 3804,
+        "criminal": 11830
       }
     },
     {
@@ -294,9 +294,9 @@
       "code": "14~25",
       "is_ut": false,
       "pending": {
-        "total": 14254,
-        "civil": 9176,
-        "criminal": 5078
+        "total": 14270,
+        "civil": 9188,
+        "criminal": 5082
       }
     },
     {
@@ -304,9 +304,9 @@
       "code": "15~19",
       "is_ut": false,
       "pending": {
-        "total": 9696,
-        "civil": 4464,
-        "criminal": 5232
+        "total": 9748,
+        "civil": 4480,
+        "criminal": 5268
       }
     },
     {
@@ -324,9 +324,9 @@
       "code": "38~38",
       "is_ut": true,
       "pending": {
-        "total": 8589,
+        "total": 8583,
         "civil": 3819,
-        "criminal": 4770
+        "criminal": 4764
       }
     },
     {
@@ -344,9 +344,9 @@
       "code": "11~24",
       "is_ut": false,
       "pending": {
-        "total": 2293,
-        "civil": 952,
-        "criminal": 1341
+        "total": 2302,
+        "civil": 956,
+        "criminal": 1346
       }
     },
     {
@@ -354,9 +354,9 @@
       "code": "37~33",
       "is_ut": true,
       "pending": {
-        "total": 1594,
-        "civil": 760,
-        "criminal": 834
+        "total": 1595,
+        "civil": 759,
+        "criminal": 836
       }
     },
     {
