@@ -1,6 +1,6 @@
 {
   "meta": {
-    "fetched_at": "2026-10-17T06:57:21.410Z",
+    "fetched_at": "2026-10-18T07:13:56.552Z",
     "sources": [
       {
         "level": "district",
@@ -21,53 +21,53 @@
     "scope": "national",
     "court_levels": 3,
     "pending": {
-      "total": 58229839,
-      "civil": 15832657,
-      "criminal": 42397182
+      "total": 58262685,
+      "civil": 15834158,
+      "criminal": 42428527
     },
     "last_month": {
       "instituted": {
-        "total": 4145051,
-        "civil": 367983,
-        "criminal": 3777166
+        "total": 4146049,
+        "civil": 368226,
+        "criminal": 3777921
       },
       "disposed": {
-        "total": 3427122,
-        "civil": 475220,
-        "criminal": 2951983
+        "total": 3428351,
+        "civil": 475291,
+        "criminal": 2953141
       },
-      "monthly_clearance_rate_pct": 82.68,
-      "net_backlog_change": 717929
+      "monthly_clearance_rate_pct": 82.69,
+      "net_backlog_change": 717698
     },
     "age_profile": {
       "under_1yr": {
-        "civil": 5966098,
-        "criminal": 16806739,
-        "total": 22772837,
+        "civil": 5973407,
+        "criminal": 16845395,
+        "total": 22818802,
         "pct_of_pending": 39
       },
       "y1_to_3": {
-        "civil": 3509240,
-        "criminal": 8906735,
-        "total": 12415975,
+        "civil": 3506862,
+        "criminal": 8903777,
+        "total": 12410639,
         "pct_of_pending": 21
       },
       "y3_to_5": {
-        "civil": 1986818,
-        "criminal": 5316752,
-        "total": 7303570,
+        "civil": 1985400,
+        "criminal": 5314934,
+        "total": 7300334,
         "pct_of_pending": 13
       },
       "y5_to_10": {
-        "civil": 2503428,
-        "criminal": 6961952,
-        "total": 9465380,
+        "civil": 2501838,
+        "criminal": 6960104,
+        "total": 9461942,
         "pct_of_pending": 16
       },
       "above_10yr": {
-        "civil": 1794078,
-        "criminal": 4385534,
-        "total": 6179612,
+        "civil": 1793555,
+        "criminal": 4384790,
+        "total": 6178345,
         "pct_of_pending": 11
       }
     },
@@ -76,8 +76,8 @@
       "pct_pending_over_5yr": 27
     },
     "litigants": {
-      "senior_citizen_filed": 3325661,
-      "women_filed": 3959118
+      "senior_citizen_filed": 3326643,
+      "women_filed": 3959734
     }
   },
   "levels": {
@@ -89,53 +89,53 @@
       "scope": "national",
       "page_updated_label": null,
       "pending": {
-        "total": 51591381,
-        "civil": 11226340,
-        "criminal": 40365041
+        "total": 51623358,
+        "civil": 11227779,
+        "criminal": 40395579
       },
       "last_month": {
         "instituted": {
-          "total": 4137327,
-          "civil": 362980,
-          "criminal": 3774347
+          "total": 4138325,
+          "civil": 363223,
+          "criminal": 3775102
         },
         "disposed": {
-          "total": 3420610,
-          "civil": 470915,
-          "criminal": 2949695
+          "total": 3421828,
+          "civil": 470976,
+          "criminal": 2950852
         },
-        "monthly_clearance_rate_pct": 82.68,
-        "net_backlog_change": 716717
+        "monthly_clearance_rate_pct": 82.69,
+        "net_backlog_change": 716497
       },
       "age_profile": {
         "under_1yr": {
-          "civil": 4667208,
-          "criminal": 16173818,
-          "total": 20841026,
+          "civil": 4673425,
+          "criminal": 16211531,
+          "total": 20884956,
           "pct_of_pending": 40
         },
         "y1_to_3": {
-          "civil": 2701458,
-          "criminal": 8556980,
-          "total": 11258438,
+          "civil": 2699403,
+          "criminal": 8554054,
+          "total": 11253457,
           "pct_of_pending": 22
         },
         "y3_to_5": {
-          "civil": 1480399,
-          "criminal": 5134915,
-          "total": 6615314,
+          "civil": 1479297,
+          "criminal": 5133123,
+          "total": 6612420,
           "pct_of_pending": 13
         },
         "y5_to_10": {
-          "civil": 1566643,
-          "criminal": 6609080,
-          "total": 8175723,
+          "civil": 1565406,
+          "criminal": 6607281,
+          "total": 8172687,
           "pct_of_pending": 16
         },
         "above_10yr": {
-          "civil": 811013,
-          "criminal": 3893141,
-          "total": 4704154,
+          "civil": 810629,
+          "criminal": 3892483,
+          "total": 4703112,
           "pct_of_pending": 9
         }
       },
@@ -144,17 +144,17 @@
         "pct_pending_over_5yr": 25
       },
       "litigants": {
-        "senior_citizen_filed": 3325661,
-        "women_filed": 3959118
+        "senior_citizen_filed": 3326643,
+        "women_filed": 3959734
       },
       "_raw": {
         "charts_args": [
-          "'6559132'",
-          "'24191223'",
-          "'30750355'",
-          "'11226340'",
-          "'40365041'",
-          "'51591381'",
+          "'6554354'",
+          "'24184048'",
+          "'30738402'",
+          "'11227779'",
+          "'40395579'",
+          "'51623358'",
           "''",
           "''",
           "''",
@@ -177,9 +177,9 @@
       "scope": "national",
       "page_updated_label": null,
       "pending": {
-        "total": 6542719,
-        "civil": 4532941,
-        "criminal": 2009778
+        "total": 6543430,
+        "civil": 4532902,
+        "criminal": 2010528
       },
       "last_month": {
         "instituted": {
@@ -197,33 +197,33 @@
       },
       "age_profile": {
         "under_1yr": {
-          "civil": 1298890,
-          "criminal": 632921,
-          "total": 1931811,
+          "civil": 1299982,
+          "criminal": 633864,
+          "total": 1933846,
           "pct_of_pending": 30
         },
         "y1_to_3": {
-          "civil": 807782,
-          "criminal": 349755,
-          "total": 1157537,
+          "civil": 807459,
+          "criminal": 349723,
+          "total": 1157182,
           "pct_of_pending": 18
         },
         "y3_to_5": {
-          "civil": 506419,
-          "criminal": 181837,
-          "total": 688256,
+          "civil": 506103,
+          "criminal": 181811,
+          "total": 687914,
           "pct_of_pending": 11
         },
         "y5_to_10": {
-          "civil": 936785,
-          "criminal": 352872,
-          "total": 1289657,
+          "civil": 936432,
+          "criminal": 352823,
+          "total": 1289255,
           "pct_of_pending": 20
         },
         "above_10yr": {
-          "civil": 983065,
-          "criminal": 492393,
-          "total": 1475458,
+          "civil": 982926,
+          "criminal": 492307,
+          "total": 1475233,
           "pct_of_pending": 23
         }
       },
@@ -237,12 +237,12 @@
       },
       "_raw": {
         "charts_args": [
-          "3234051",
-          "1376857",
-          "4610908",
-          "4532941",
-          "2009778",
-          "6542719",
+          "3232920",
+          "1376664",
+          "4609584",
+          "4532902",
+          "2010528",
+          "6543430",
           "''",
           "''",
           "''",
@@ -265,9 +265,9 @@
       "scope": "national",
       "page_updated_label": "28-09-2026",
       "pending": {
-        "total": 95739,
-        "civil": 73376,
-        "criminal": 22363
+        "total": 95897,
+        "civil": 73477,
+        "criminal": 22420
       },
       "last_month": {
         "instituted": {
@@ -276,12 +276,12 @@
           "criminal": 2720
         },
         "disposed": {
-          "total": 6510,
-          "civil": 4304,
-          "criminal": 2206
+          "total": 6521,
+          "civil": 4314,
+          "criminal": 2207
         },
-        "monthly_clearance_rate_pct": 84.3,
-        "net_backlog_change": 1212
+        "monthly_clearance_rate_pct": 84.45,
+        "net_backlog_change": 1201
       },
       "age_profile": {},
       "derived": {
@@ -294,12 +294,12 @@
       },
       "_raw": {
         "charts_args": [
-          "26105",
-          "10391",
-          "36496",
-          "73376",
-          "22363",
-          "95739",
+          "26156",
+          "10429",
+          "36585",
+          "73477",
+          "22420",
+          "95897",
           "''",
           "''",
           "''",
